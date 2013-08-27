@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <AFHTTPRequestOperation.h>
+
+#import <AFNetworking/AFHTTPRequestOperation.h>
+#import <AFNetworking/AFImageRequestOperation.h>
 
 @interface AFNetworkingMeterData : NSObject
 
@@ -15,5 +17,8 @@
 
 - (void)collectRequestDataFromAFHTTPRequestOperation:(AFHTTPRequestOperation *)operation;
 - (void)collectResponseDataFromAFHTTPRequestOperation:(AFHTTPRequestOperation *)operation;
+
+- (void)collectRequestDataFromAFImageRequestOperation:(AFImageRequestOperation *)operation;
+- (void)collectResponseDataFromAFImageRequestOperation:(AFImageRequestOperation *)operation;
 
 @end

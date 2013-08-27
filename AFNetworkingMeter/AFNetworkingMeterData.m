@@ -153,6 +153,10 @@ static NSString * const AFNetworkingMeterDataServerErrors = @"Server errors";
 static NSString * const AFNetworkingMeterDataTotalConnectionErrors = @"Total connection errors";
 static NSString * const AFNetworkingMeterDataConnectionErrors = @"Connection errors";
 
+static NSString * const AFNetworkingMeterDataImageRequests = @"Image requests";
+static NSString * const AFNetworkingMeterDataImageResponses = @"Image responses";
+static NSString * const AFNetworkingMeterDataImageBytesReceived = @"Image data received (bytes)";
+
 #define keypath(...) \
 [@[ __VA_ARGS__ ] componentsJoinedByString:@"."]
 
@@ -173,6 +177,9 @@ static NSString * const AFNetworkingMeterDataConnectionErrors = @"Connection err
 
     return self;
 }
+
+#pragma mark
+#pragma mark AFHTTPRequestOperation
 
 - (void)collectRequestDataFromAFHTTPRequestOperation:(AFHTTPRequestOperation *)operation {
     [self addNumberValue:@(1) forKey:AFNetworkingMeterDataRequests];
@@ -212,6 +219,21 @@ static NSString * const AFNetworkingMeterDataConnectionErrors = @"Connection err
     [self addNumberValue:@(operation.responseData.length) forKey:AFNetworkingMeterDataBytesReceived];
 }
 
+#pragma mark
+#pragma mark AFImageRequestOperation
+
+- (void)collectRequestDataFromAFImageRequestOperation:(AFImageRequestOperation *)operation {
+    [self addNumberValue:@(1) forKey:AFNetworkingMeterDataImageRequests];
+}
+
+- (void)collectResponseDataFromAFImageRequestOperation:(AFImageRequestOperation *)operation {
+    [self addNumberValue:@(1) forKey:AFNetworkingMeterDataImageResponses];
+
+    [self addNumberValue:@(operation.responseData.length) forKey:AFNetworkingMeterDataImageBytesReceived];
+}
+
+#pragma mark
+
 - (NSString *)formattedData {
     NSMutableArray *formattedDataComponents = [NSMutableArray array];
 
@@ -248,6 +270,20 @@ static NSString * const AFNetworkingMeterDataConnectionErrors = @"Connection err
     NSString *maximalElapsedTimeString = [NSString stringWithFormat:@"Maximal elapsed time for request (seconds): %@", [numberFormatter stringFromNumber:maximalElapsedTime]];
     [formattedDataComponents addObject:maximalElapsedTimeString];
 
+    // AFImageRequestOperations
+    NSNumber *imageRequests = [self valueForKey:AFNetworkingMeterDataImageRequests];
+    NSString *imageRequestsString = [NSString stringWithFormat:@"Image requests: %@", imageRequests];
+    [formattedDataComponents addObject:imageRequestsString];
+
+    NSNumber *imageResponses = [self valueForKey:AFNetworkingMeterDataImageResponses];
+    NSString *imageResponsesString = [NSString stringWithFormat:@"Image responses: %@", imageResponses];
+    [formattedDataComponents addObject:imageResponsesString];
+
+    NSNumber *imageBytesReceived = [self valueForKey:AFNetworkingMeterDataImageBytesReceived];
+    NSString *imageBytesReceivedString = [NSString stringWithFormat:@"Image data received (bytes): %@", imageBytesReceived];
+    [formattedDataComponents addObject:imageBytesReceivedString];
+
+    // Server errors
     NSNumber *totalServerErrors = [self valueForKey:AFNetworkingMeterDataTotalServerErrors];
     NSString *totalServerErrorsString = [NSString stringWithFormat:@"Total server errors: %@", totalServerErrors];
     [formattedDataComponents addObject:totalServerErrorsString];

@@ -9,7 +9,9 @@
 #import "TestHelpers.h"
 
 #import "AFNetworkingMeter.h"
+
 #import <AFNetworking/AFHTTPRequestOperation.h>
+#import <AFNetworking/AFImageRequestOperation.h>
 
 SPEC_BEGIN(AFNetworkingMeterAppSpec)
 
@@ -84,6 +86,25 @@ describe(@"...", ^{
 
         [requestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        }];
+
+        [requestOperation start];
+
+        runLoopIfNeeded();
+    });
+
+    it (@"AFImageRequestOperation", ^{
+        [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+            return YES;
+        } withStubResponse:^OHHTTPStubsResponse*(NSURLRequest *request) {
+            return [OHHTTPStubsResponse responseWithFile:@"apple.jpg" contentType:@"image/jpeg" responseTime:0];
+        }];
+
+        NSURLRequest *urlRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:@"www.foo.bar/apple.jpg"]];
+        AFImageRequestOperation *requestOperation = [AFImageRequestOperation imageRequestOperationWithRequest:urlRequest imageProcessingBlock:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+            NSAssert(nil, nil);
         }];
 
         [requestOperation start];

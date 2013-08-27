@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0B163FA9B3F5408E84B4467B /* libPods-AFNetworkingMeterAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07C5326899754554B9FEA1B4 /* libPods-AFNetworkingMeterAppTests.a */; };
+		861F363317CC47710028D579 /* apple.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 861F363217CC47710028D579 /* apple.jpg */; };
 		86C6442C17C4FEF200570DFB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86C6442B17C4FEF200570DFB /* UIKit.framework */; };
 		86C6442E17C4FEF200570DFB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86C6442D17C4FEF200570DFB /* Foundation.framework */; };
 		86C6443017C4FEF200570DFB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86C6442F17C4FEF200570DFB /* CoreGraphics.framework */; };
@@ -48,6 +49,7 @@
 		07C5326899754554B9FEA1B4 /* libPods-AFNetworkingMeterAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AFNetworkingMeterAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		484BC3D3A6E343E0A896479E /* Pods-AFNetworkingMeterAppTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AFNetworkingMeterAppTests.xcconfig"; path = "Pods/Pods-AFNetworkingMeterAppTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		4EF07AB9A03A42B2BB3BE7CF /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		861F363217CC47710028D579 /* apple.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = apple.jpg; sourceTree = "<group>"; };
 		86C6442817C4FEF200570DFB /* AFNetworkingMeterApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AFNetworkingMeterApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86C6442B17C4FEF200570DFB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		86C6442D17C4FEF200570DFB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -73,7 +75,7 @@
 		86C6446A17C4FEFD00570DFB /* AFNetworkingMeter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkingMeter.h; sourceTree = "<group>"; };
 		86C6446B17C4FEFD00570DFB /* AFNetworkingMeter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkingMeter.m; sourceTree = "<group>"; };
 		86C6446D17C507EE00570DFB /* TestHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestHelpers.h; sourceTree = "<group>"; };
-		86C6446E17C518A400570DFB /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
+		86C6446E17C518A400570DFB /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		86C6447117C524D100570DFB /* AFNetworkingMeterData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkingMeterData.h; sourceTree = "<group>"; };
 		86C6447217C524D100570DFB /* AFNetworkingMeterData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkingMeterData.m; sourceTree = "<group>"; };
 		86C6447617C550CB00570DFB /* AFHTTPRequestOperation+StartDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFHTTPRequestOperation+StartDate.h"; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 		86C6445917C4FEF300570DFB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				861F363217CC47710028D579 /* apple.jpg */,
 				86C6445A17C4FEF300570DFB /* AFNetworkingMeterAppTests-Info.plist */,
 				86C6445B17C4FEF300570DFB /* InfoPlist.strings */,
 			);
@@ -293,6 +296,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				86C6445D17C4FEF300570DFB /* InfoPlist.strings in Resources */,
+				861F363317CC47710028D579 /* apple.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
