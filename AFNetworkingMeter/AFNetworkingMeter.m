@@ -1,4 +1,5 @@
 #import "AFNetworkingMeter.h"
+#import "AFNetworkingMeterReportGenerator.h"
 
 #import <AFNetworking/AFHTTPRequestOperation.h>
 #import <AFNetworking/AFImageRequestOperation.h>
@@ -13,6 +14,10 @@ extern void * AFNMHTTPRequestOperationStartDate;
 #error AFNetworkingMeter must be built with ARC.
 // You can turn on ARC for only AFNetworkingMeter files by adding -fobjc-arc to the build phase for each of its files.
 #endif
+
+@interface AFNetworkingMeter ()
+@property (strong, nonatomic) AFNetworkingMeterReportGenerator *reportGenerator;
+@end
 
 @implementation AFNetworkingMeter
 
@@ -51,6 +56,20 @@ extern void * AFNMHTTPRequestOperationStartDate;
 
 - (void)stopMeter {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (AFNetworkingMeterReportGenerator *)reportGenerator {
+    if (_reportGenerator == nil) {
+        _reportGenerator = [[AFNetworkingMeterReportGenerator alloc] init];
+    }
+
+    return _reportGenerator;
+}
+
+- (NSString *)formattedReport {
+    NSString *formattedReport = [self.reportGenerator formattedReportForData:self.data];
+
+    return formattedReport;
 }
 
 #pragma mark - NSNotification

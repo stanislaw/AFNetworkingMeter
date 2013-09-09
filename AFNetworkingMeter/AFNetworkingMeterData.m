@@ -7,6 +7,7 @@
 //
 
 #import "AFNetworkingMeterData.h"
+#import "AFNetworkingMeterConstants.h"
 
 #import "AFHTTPRequestOperation+StartDate.h"
 
@@ -138,28 +139,6 @@ static inline NSString * NSStringForNSURLError(NSError *error) {
     return [NSString stringWithFormat:@"%@ %d", string, error.code];
 }
 
-static NSString * const AFNetworkingMeterDataRequests = @"Requests";
-static NSString * const AFNetworkingMeterDataResponses = @"Responses";
-
-static NSString * const AFNetworkingMeterDataBytesReceived = @"Received (bytes)";
-static NSString * const AFNetworkingMeterDataBytesSent = @"Sent (bytes)";
-
-static NSString * const AFNetworkingMeterDataMinimalElapsedTimeForRequest = @"Minimal elapsed time for request (seconds)";
-static NSString * const AFNetworkingMeterDataMaximalElapsedTimeForRequest = @"Maximal elapsed time for request (seconds)";
-
-static NSString * const AFNetworkingMeterDataTotalServerErrors = @"Total server errors";
-static NSString * const AFNetworkingMeterDataServerErrors = @"Server errors";
-
-static NSString * const AFNetworkingMeterDataTotalConnectionErrors = @"Total connection errors";
-static NSString * const AFNetworkingMeterDataConnectionErrors = @"Connection errors";
-
-static NSString * const AFNetworkingMeterDataImageRequests = @"Image requests";
-static NSString * const AFNetworkingMeterDataImageResponses = @"Image responses";
-static NSString * const AFNetworkingMeterDataImageBytesReceived = @"Image data received (bytes)";
-
-#define keypath(...) \
-[@[ __VA_ARGS__ ] componentsJoinedByString:@"."]
-
 @interface AFNetworkingMeterData () {
     NSMutableDictionary * _data;
 }
@@ -230,77 +209,6 @@ static NSString * const AFNetworkingMeterDataImageBytesReceived = @"Image data r
     [self addNumberValue:@(1) forKey:AFNetworkingMeterDataImageResponses];
 
     [self addNumberValue:@(operation.responseData.length) forKey:AFNetworkingMeterDataImageBytesReceived];
-}
-
-#pragma mark
-
-- (NSString *)formattedData {
-    NSMutableArray *formattedDataComponents = [NSMutableArray array];
-
-    NSString *title = @"\n\nAFNetworkingMeter\n=================";
-    [formattedDataComponents addObject:title];
-
-    NSNumber *requests = [self valueForKey:AFNetworkingMeterDataRequests];
-    NSString *requestsString = [NSString stringWithFormat:@"Requests: %@", requests];
-    [formattedDataComponents addObject:requestsString];
-
-    NSNumber *responses = [self valueForKey:AFNetworkingMeterDataResponses];
-    NSString *responsesString = [NSString stringWithFormat:@"Responses: %@", responses];
-    [formattedDataComponents addObject:responsesString];
-
-    NSNumber *bytesSent = [self valueForKey:AFNetworkingMeterDataBytesSent];
-    NSString *bytesSentString = [NSString stringWithFormat:@"Sent (bytes): %@", bytesSent];
-    [formattedDataComponents addObject:bytesSentString];
-
-    NSNumber *bytesReceived = [self valueForKey:AFNetworkingMeterDataBytesReceived];
-    NSString *bytesReceivedString = [NSString stringWithFormat:@"Received (bytes): %@", bytesReceived];
-    [formattedDataComponents addObject:bytesReceivedString];
-
-    NSNumberFormatter * numberFormatter = [[NSNumberFormatter alloc] init];
-    numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
-    numberFormatter.minimumFractionDigits = 0;
-    numberFormatter.maximumFractionDigits = 7;
-    numberFormatter.minimumIntegerDigits = 1;
-
-    NSNumber *minimalElapsedTime = [self valueForKey:AFNetworkingMeterDataMinimalElapsedTimeForRequest];
-    NSString *minimalElapsedTimeString = [NSString stringWithFormat:@"Minimal elapsed time for request (seconds): %@", [numberFormatter stringFromNumber:minimalElapsedTime]];
-    [formattedDataComponents addObject:minimalElapsedTimeString];
-
-    NSNumber *maximalElapsedTime = [self valueForKey:AFNetworkingMeterDataMaximalElapsedTimeForRequest];
-    NSString *maximalElapsedTimeString = [NSString stringWithFormat:@"Maximal elapsed time for request (seconds): %@", [numberFormatter stringFromNumber:maximalElapsedTime]];
-    [formattedDataComponents addObject:maximalElapsedTimeString];
-
-    // AFImageRequestOperations
-    NSNumber *imageRequests = [self valueForKey:AFNetworkingMeterDataImageRequests];
-    NSString *imageRequestsString = [NSString stringWithFormat:@"Image requests: %@", imageRequests];
-    [formattedDataComponents addObject:imageRequestsString];
-
-    NSNumber *imageResponses = [self valueForKey:AFNetworkingMeterDataImageResponses];
-    NSString *imageResponsesString = [NSString stringWithFormat:@"Image responses: %@", imageResponses];
-    [formattedDataComponents addObject:imageResponsesString];
-
-    NSNumber *imageBytesReceived = [self valueForKey:AFNetworkingMeterDataImageBytesReceived];
-    NSString *imageBytesReceivedString = [NSString stringWithFormat:@"Image data received (bytes): %@", imageBytesReceived];
-    [formattedDataComponents addObject:imageBytesReceivedString];
-
-    // Server errors
-    NSNumber *totalServerErrors = [self valueForKey:AFNetworkingMeterDataTotalServerErrors];
-    NSString *totalServerErrorsString = [NSString stringWithFormat:@"Total server errors: %@", totalServerErrors];
-    [formattedDataComponents addObject:totalServerErrorsString];
-
-    NSNumber *serverErrors = [self valueForKey:AFNetworkingMeterDataServerErrors];
-    NSString *serverErrorsString = [NSString stringWithFormat:@"Server errors: %@", serverErrors];
-    [formattedDataComponents addObject:serverErrorsString];
-
-    NSNumber *totalConnectionErrors = [self valueForKey:AFNetworkingMeterDataTotalConnectionErrors];
-    NSString *totalConnectionErrorsString = [NSString stringWithFormat:@"Total connection errors: %@", totalConnectionErrors];
-    [formattedDataComponents addObject:totalConnectionErrorsString];
-
-    NSNumber *connectionErrors = [self valueForKey:AFNetworkingMeterDataConnectionErrors];
-    NSString *connectionErrorsString = [NSString stringWithFormat:@"Connection errors: %@", connectionErrors];
-    [formattedDataComponents addObject:connectionErrorsString];
-
-    return [formattedDataComponents componentsJoinedByString:@"\n"];
 }
 
 #pragma mark

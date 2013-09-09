@@ -21,7 +21,7 @@ describe(@"...", ^{
     });
 
     afterAll(^{
-        NSLog(@"AFNetworkingMeter.data: %@", [AFNetworkingMeter sharedMeter].data.formattedData);
+        NSLog(@"AFNetworkingMeter.data: %@", [AFNetworkingMeter sharedMeter].formattedReport);
     });
     
     afterEach(^{

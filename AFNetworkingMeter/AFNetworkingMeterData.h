@@ -13,8 +13,6 @@
 
 @interface AFNetworkingMeterData : NSObject
 
-@property (readonly) NSString *formattedData;
-
 - (void)collectRequestDataFromAFHTTPRequestOperation:(AFHTTPRequestOperation *)operation;
 - (void)collectResponseDataFromAFHTTPRequestOperation:(AFHTTPRequestOperation *)operation;
 

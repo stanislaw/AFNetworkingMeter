@@ -12,4 +12,6 @@
 - (void)startMeter;
 - (void)stopMeter;
 
+@property (readonly) NSString *formattedReport;
+
 @end
