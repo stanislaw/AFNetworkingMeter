@@ -9,16 +9,16 @@
 #import "AFNetworkingMeterReportGenerator.h"
 #import "AFNetworkingMeterConstants.h"
 
-#define REPORT_RIGHT_COLUMN_LEFT 50
+#define REPORT_WIDTH 44
 
-NSString *string44ForCharacter(NSString *character) {
-    NSMutableString *string44 = [NSMutableString stringWithCapacity:44];
+NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length) {
+    NSMutableString *string = [NSMutableString stringWithCapacity:length];
 
-    for (int i = 0; i < 44; i++) {
-        [string44 insertString:character atIndex:0];
+    for (int i = 0; i < length; i++) {
+        [string insertString:character atIndex:0];
     }
 
-    return [string44 copy];
+    return [string copy];
 }
 
 @implementation AFNetworkingMeterReportGenerator
@@ -26,22 +26,30 @@ NSString *string44ForCharacter(NSString *character) {
 - (NSString *)formattedReportForData:(AFNetworkingMeterData *)data {
     NSMutableArray *formattedDataComponents = [NSMutableArray array];
 
+    NSString *stringWithLengthEqualToReportWidthAndFilledWithSpaces = NSStringFromCharacterAndLength(@" ", REPORT_WIDTH);
+
 #pragma mark Header
-    
-    NSString *headerTop = string44ForCharacter(@"=");
+
+    NSString *headerTop = NSStringFromCharacterAndLength(@"=", REPORT_WIDTH);
     NSString *headerTitle = @"   AFNetworkingMeter  -  formatted report   ";
-    NSString *headerBottom = string44ForCharacter(@"-");
+    NSString *headerBottom = NSStringFromCharacterAndLength(@"-", REPORT_WIDTH);
     NSString *headerString = [@[headerTop, headerTitle, headerBottom] componentsJoinedByString:@"\n"];
 
 #pragma mark Summary
 
-    NSNumber *requests = [data valueForKey:AFNetworkingMeterDataRequests];
-    NSString *requestsString = [NSString stringWithFormat:@"Requests:"];
-    requestsString = [NSString stringWithFormat:@"%@ %@", requestsString, requests];
+    NSString *requestsKey = @"Requests:";
+    NSString *requestsValue = [[data valueForKey:AFNetworkingMeterDataRequests] stringValue];
 
+    NSMutableString *requestsString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
+    [requestsString replaceCharactersInRange:NSMakeRange(0, requestsKey.length) withString:requestsKey];
+    [requestsString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - requestsValue.length, requestsValue.length) withString:requestsValue];
 
-    NSNumber *responses = [data valueForKey:AFNetworkingMeterDataResponses];
-    NSString *responsesString = [NSString stringWithFormat:@"Responses:%*s %@", 2, "+", responses];
+    NSString *responsesKey = @"Responses:";
+    NSString *responsesValue = [[data valueForKey:AFNetworkingMeterDataResponses] stringValue];
+
+    NSMutableString *responsesString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
+    [responsesString replaceCharactersInRange:NSMakeRange(0, responsesKey.length) withString:responsesKey];
+    [responsesString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - responsesValue.length, responsesValue.length) withString:responsesValue];
 
     NSNumber *bytesSent = [data valueForKey:AFNetworkingMeterDataBytesSent];
     NSString *bytesSentString = [NSString stringWithFormat:@"Sent (bytes): %@", bytesSent];
