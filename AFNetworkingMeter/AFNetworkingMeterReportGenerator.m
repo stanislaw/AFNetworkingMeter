@@ -27,6 +27,13 @@ NSString *string44ForCharacter(NSString *character) {
     NSMutableArray *formattedDataComponents = [NSMutableArray array];
 
 #pragma mark Header
+    
+    NSString *headerTop = string44ForCharacter(@"=");
+    NSString *headerTitle = @"   AFNetworkingMeter  -  formatted report   ";
+    NSString *headerBottom = string44ForCharacter(@"-");
+    NSString *headerString = [@[headerTop, headerTitle, headerBottom] componentsJoinedByString:@"\n"];
+
+#pragma mark Summary
 
     NSNumber *requests = [data valueForKey:AFNetworkingMeterDataRequests];
     NSString *requestsString = [NSString stringWithFormat:@"Requests:"];
@@ -43,6 +50,7 @@ NSString *string44ForCharacter(NSString *character) {
     NSNumber *bytesReceived = [data valueForKey:AFNetworkingMeterDataBytesReceived];
     NSString *bytesReceivedString = [NSString stringWithFormat:@"Received (bytes): %@", bytesReceived];
 
+#pragma mark Elapsed time
 
     NSNumberFormatter * numberFormatter = [[NSNumberFormatter alloc] init];
     numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
@@ -53,49 +61,40 @@ NSString *string44ForCharacter(NSString *character) {
     NSNumber *minimalElapsedTime = [data valueForKey:AFNetworkingMeterDataMinimalElapsedTimeForRequest];
     NSString *minimalElapsedTimeString = [NSString stringWithFormat:@"Minimal elapsed time for request (seconds): %@", [numberFormatter stringFromNumber:minimalElapsedTime]];
 
-
-
-
     NSNumber *maximalElapsedTime = [data valueForKey:AFNetworkingMeterDataMaximalElapsedTimeForRequest];
     NSString *maximalElapsedTimeString = [NSString stringWithFormat:@"Maximal elapsed time for request (seconds): %@", [numberFormatter stringFromNumber:maximalElapsedTime]];
 
+#pragma mark Image requests
 
-
-    // AFImageRequestOperations
     NSNumber *imageRequests = [data valueForKey:AFNetworkingMeterDataImageRequests];
     NSString *imageRequestsString = [NSString stringWithFormat:@"Image requests: %@", imageRequests];
 
     NSNumber *imageResponses = [data valueForKey:AFNetworkingMeterDataImageResponses];
     NSString *imageResponsesString = [NSString stringWithFormat:@"Image responses: %@", imageResponses];
 
-
-
-
     NSNumber *imageBytesReceived = [data valueForKey:AFNetworkingMeterDataImageBytesReceived];
     NSString *imageBytesReceivedString = [NSString stringWithFormat:@"Image data received (bytes): %@", imageBytesReceived];
 
+#pragma mark Server errors
 
-
-    // Server errors
     NSNumber *totalServerErrors = [data valueForKey:AFNetworkingMeterDataTotalServerErrors];
     NSString *totalServerErrorsString = [NSString stringWithFormat:@"Total server errors: %@", totalServerErrors];
-
-
 
     NSNumber *serverErrors = [data valueForKey:AFNetworkingMeterDataServerErrors];
     NSString *serverErrorsString = [NSString stringWithFormat:@"Server errors: %@", serverErrors];
 
+#pragma mark Connection errors
 
     NSNumber *totalConnectionErrors = [data valueForKey:AFNetworkingMeterDataTotalConnectionErrors];
     NSString *totalConnectionErrorsString = [NSString stringWithFormat:@"Total connection errors: %@", totalConnectionErrors];
 
-
-
     NSNumber *connectionErrors = [data valueForKey:AFNetworkingMeterDataConnectionErrors];
     NSString *connectionErrorsString = [NSString stringWithFormat:@"Connection errors: %@", connectionErrors];
 
+#pragma mark Aggregation of the formatted report
+
     [formattedDataComponents addObject:@"\n"];
-    [formattedDataComponents addObject:string44ForCharacter(@"=")];
+    [formattedDataComponents addObject:headerString];
     [formattedDataComponents addObject:requestsString];
     [formattedDataComponents addObject:responsesString];
     [formattedDataComponents addObject:bytesSentString];
