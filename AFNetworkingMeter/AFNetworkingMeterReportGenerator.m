@@ -102,32 +102,73 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
     [imageResponsesString replaceCharactersInRange:NSMakeRange(0, imageResponsesKey.length) withString:imageResponsesKey];
     [imageResponsesString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - imageResponsesValue.length, imageResponsesValue.length) withString:imageResponsesValue];
 
-    NSNumber *imageBytesReceived = [data valueForKey:AFNetworkingMeterDataImageBytesReceived];
-    NSString *imageBytesReceivedString = [NSString stringWithFormat:@"Image data received (bytes): %@", imageBytesReceived];
+
+    NSString *imageBytesReceivedKey = @"Data received (bytes):";
+    NSString *imageBytesReceivedValue = [[data valueForKey:AFNetworkingMeterDataImageBytesReceived] stringValue];
+    NSMutableString *imageBytesReceivedString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
+    [imageBytesReceivedString replaceCharactersInRange:NSMakeRange(0, imageBytesReceivedKey.length) withString:imageBytesReceivedKey];
+    [imageBytesReceivedString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - imageBytesReceivedValue.length, imageBytesReceivedValue.length) withString:imageBytesReceivedValue];
 
 #pragma mark Server errors
 
-    NSNumber *totalServerErrors = [data valueForKey:AFNetworkingMeterDataTotalServerErrors];
-    NSString *totalServerErrorsString = [NSString stringWithFormat:@"Total server errors: %@", totalServerErrors];
+    NSString *totalServerErrorsKey = @"Total:";
+    NSString *totalServerErrorsValue = [[data valueForKey:AFNetworkingMeterDataTotalServerErrors] stringValue];
 
-    NSNumber *serverErrors = [data valueForKey:AFNetworkingMeterDataServerErrors];
-    NSString *serverErrorsString = [NSString stringWithFormat:@"Server errors: %@", serverErrors];
+    NSMutableString *totalServerErrorsString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
+    [totalServerErrorsString replaceCharactersInRange:NSMakeRange(0, totalServerErrorsKey.length) withString:totalServerErrorsKey];
+    [totalServerErrorsString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - totalServerErrorsValue.length, totalServerErrorsValue.length) withString:totalServerErrorsValue];
+
+
+    NSDictionary *serverErrorsValue = [data valueForKey:AFNetworkingMeterDataServerErrors];
+    NSMutableArray *serverErrorsStringsArray = [NSMutableArray array];
+
+    [serverErrorsValue enumerateKeysAndObjectsUsingBlock:^(NSString *statusCodeString, NSNumber *quantity, BOOL *stop) {
+        NSString *quantityString = [quantity stringValue];
+
+        NSMutableString *errorString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
+
+        [errorString replaceCharactersInRange:NSMakeRange(0, statusCodeString.length) withString:statusCodeString];
+        [errorString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - quantityString.length, quantityString.length) withString:quantityString];
+
+        [serverErrorsStringsArray addObject:errorString];
+    }];
+
+    NSString *serverErrorsString = [serverErrorsStringsArray componentsJoinedByString:@"\n"];
 
 #pragma mark Connection errors
 
-    NSNumber *totalConnectionErrors = [data valueForKey:AFNetworkingMeterDataTotalConnectionErrors];
-    NSString *totalConnectionErrorsString = [NSString stringWithFormat:@"Total connection errors: %@", totalConnectionErrors];
+    NSString *totalConnectionErrorsKey = @"Total:";
+    NSString *totalConnectionErrorsValue = [[data valueForKey:AFNetworkingMeterDataTotalConnectionErrors] stringValue];
 
-    NSNumber *connectionErrors = [data valueForKey:AFNetworkingMeterDataConnectionErrors];
-    NSString *connectionErrorsString = [NSString stringWithFormat:@"Connection errors: %@", connectionErrors];
+    NSMutableString *totalConnectionErrorsString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
+    [totalConnectionErrorsString replaceCharactersInRange:NSMakeRange(0, totalConnectionErrorsKey.length) withString:totalConnectionErrorsKey];
+    [totalConnectionErrorsString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - totalConnectionErrorsValue.length, totalConnectionErrorsValue.length) withString:totalConnectionErrorsValue];
+
+
+    NSDictionary *connectionErrorsValue = [data valueForKey:AFNetworkingMeterDataConnectionErrors];
+    NSMutableArray *connectionErrorsStringsArray = [NSMutableArray array];
+
+    [connectionErrorsValue enumerateKeysAndObjectsUsingBlock:^(NSString *NSURLErrorString, NSNumber *quantity, BOOL *stop) {
+        NSString *quantityString = [quantity stringValue];
+
+        NSMutableString *errorString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
+
+        [errorString replaceCharactersInRange:NSMakeRange(0, NSURLErrorString.length) withString:NSURLErrorString];
+        [errorString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - quantityString.length, quantityString.length) withString:quantityString];
+
+        [connectionErrorsStringsArray addObject:errorString];
+    }];
+
+    NSString *connectionErrorsString = [connectionErrorsStringsArray componentsJoinedByString:@"\n"];
 
 #pragma mark Aggregation of the formatted report
+
     NSString *headerTop = NSStringFromCharacterAndLength(@"=", REPORT_WIDTH);
     NSString *headerTitle = @"   AFNetworkingMeter  -  formatted report   ";
     NSString *headerBottom = NSStringFromCharacterAndLength(@"-", REPORT_WIDTH);
     NSString *headerString = [@[headerTop, headerTitle, headerBottom] componentsJoinedByString:@"\n"];
 
-    [formattedDataComponents addObject:@"\n"];
+    [formattedDataComponents addObject:@"\n\n"];
     [formattedDataComponents addObject:headerString];
 
     [formattedDataComponents addObject:@"\n\n"];
@@ -169,9 +210,22 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
     [formattedDataComponents addObject:@"\n\n"];
 
     [formattedDataComponents addObject:totalServerErrorsString];
+    [formattedDataComponents addObject:@"\n"];
+
     [formattedDataComponents addObject:serverErrorsString];
+
+    [formattedDataComponents addObject:@"\n\n"];
+    [formattedDataComponents addObject:@"Connection errors (NSURLError) ............."];
+    [formattedDataComponents addObject:@"\n\n"];
+
     [formattedDataComponents addObject:totalConnectionErrorsString];
+    [formattedDataComponents addObject:@"\n"];
+
     [formattedDataComponents addObject:connectionErrorsString];
+
+    [formattedDataComponents addObject:@"\n\n"];
+    [formattedDataComponents addObject:@"============================================"];
+    [formattedDataComponents addObject:@"\n\n"];
 
     return [formattedDataComponents componentsJoinedByString:@""];
 }
