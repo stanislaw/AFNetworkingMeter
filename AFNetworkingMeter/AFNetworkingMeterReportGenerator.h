@@ -10,5 +10,9 @@
 #import "AFNetworkingMeterData.h"
 
 @interface AFNetworkingMeterReportGenerator : NSObject
+
+@property BOOL lazyReporting;
+
 - (NSString *)formattedReportForData:(AFNetworkingMeterData *)data;
+
 @end

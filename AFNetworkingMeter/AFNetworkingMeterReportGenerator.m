@@ -29,33 +29,53 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
     NSString *stringWithLengthEqualToReportWidthAndFilledWithSpaces = NSStringFromCharacterAndLength(@" ", REPORT_WIDTH);
 
 #pragma mark Summary
+    NSMutableString *requestsString,
+                    *responsesString,
+                    *minimalElapsedTimeString,
+                    *maximalElapsedTimeString,
+                    *imageRequestsString,
+                    *imageResponsesString,
+                    *imageBytesReceivedString,
+                    *totalConnectionErrorsString,
+                    *connectionErrorsString,
+                    *serverErrorsString;
+
+
+    NSString *requestsValue = [[data valueForKey:AFNetworkingMeterDataRequests] stringValue];
+    NSString *responsesValue = [[data valueForKey:AFNetworkingMeterDataResponses] stringValue];
+    NSString *bytesSentValue = [[data valueForKey:AFNetworkingMeterDataBytesSent] stringValue];
+    NSString *bytesReceivedValue = [[data valueForKey:AFNetworkingMeterDataBytesReceived] stringValue];
+
+
+    BOOL atLeastOneRequestHasBeenMade = !!requestsValue && !!responsesValue;
+
+
+    requestsValue = requestsValue ?: @"0";
+    responsesValue = responsesValue ?: @"0";
+    bytesSentValue = bytesSentValue ?: @"0";
+    bytesReceivedValue = bytesReceivedValue ?: @"0";
+
 
     NSString *requestsKey = @"Requests:";
-    NSString *requestsValue = [[data valueForKey:AFNetworkingMeterDataRequests] stringValue];
+    NSString *responsesKey = @"Responses:";
+    NSString *bytesSentKey = @"Sent (bytes):";
+    NSString *bytesReceivedKey = @"Received (bytes):";
 
-    NSMutableString *requestsString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
+
+    requestsString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
     [requestsString replaceCharactersInRange:NSMakeRange(0, requestsKey.length) withString:requestsKey];
     [requestsString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - requestsValue.length, requestsValue.length) withString:requestsValue];
 
 
-    NSString *responsesKey = @"Responses:";
-    NSString *responsesValue = [[data valueForKey:AFNetworkingMeterDataResponses] stringValue];
-
-    NSMutableString *responsesString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
+    responsesString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
     [responsesString replaceCharactersInRange:NSMakeRange(0, responsesKey.length) withString:responsesKey];
     [responsesString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - responsesValue.length, responsesValue.length) withString:responsesValue];
 
-
-    NSString *bytesSentKey = @"Sent (bytes):";
-    NSString *bytesSentValue = [[data valueForKey:AFNetworkingMeterDataBytesSent] stringValue];
 
     NSMutableString *bytesSentString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
     [bytesSentString replaceCharactersInRange:NSMakeRange(0, bytesSentKey.length) withString:bytesSentKey];
     [bytesSentString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - bytesSentValue.length, bytesSentValue.length) withString:bytesSentValue];
 
-
-    NSString *bytesReceivedKey = @"Received (bytes):";
-    NSString *bytesReceivedValue = [[data valueForKey:AFNetworkingMeterDataBytesReceived] stringValue];
 
     NSMutableString *bytesReceivedString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
     [bytesReceivedString replaceCharactersInRange:NSMakeRange(0, bytesReceivedKey.length) withString:bytesReceivedKey];
@@ -63,103 +83,126 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
 
 #pragma mark Elapsed time
 
-    NSNumberFormatter * numberFormatter = [[NSNumberFormatter alloc] init];
-    numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
-    numberFormatter.minimumFractionDigits = 0;
-    numberFormatter.maximumFractionDigits = 7;
-    numberFormatter.minimumIntegerDigits = 1;
+    if (atLeastOneRequestHasBeenMade) {
+        NSNumberFormatter * numberFormatter = [[NSNumberFormatter alloc] init];
+        numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+        numberFormatter.minimumFractionDigits = 0;
+        numberFormatter.maximumFractionDigits = 7;
+        numberFormatter.minimumIntegerDigits = 1;
 
 
-    NSString *minimalElapsedTimeKey = @"Min (seconds):";
-    NSString *minimalElapsedTimeValue = [numberFormatter stringFromNumber:[data valueForKey:AFNetworkingMeterDataMinimalElapsedTimeForRequest]];
-
-    NSMutableString *minimalElapsedTimeString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
-    [minimalElapsedTimeString replaceCharactersInRange:NSMakeRange(0, minimalElapsedTimeKey.length) withString:minimalElapsedTimeKey];
-    [minimalElapsedTimeString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - minimalElapsedTimeValue.length, minimalElapsedTimeValue.length) withString:minimalElapsedTimeValue];
+        NSString *minimalElapsedTimeKey = @"Min (seconds):";
+        NSString *maximalElapsedTimeKey = @"Max (seconds):";
 
 
-    NSString *maximalElapsedTimeKey = @"Min (seconds):";
-    NSString *maximalElapsedTimeValue = [numberFormatter stringFromNumber:[data valueForKey:AFNetworkingMeterDataMaximalElapsedTimeForRequest]];
+        NSString *minimalElapsedTimeValue = [numberFormatter stringFromNumber:[data valueForKey:AFNetworkingMeterDataMinimalElapsedTimeForRequest]];
+        NSString *maximalElapsedTimeValue = [numberFormatter stringFromNumber:[data valueForKey:AFNetworkingMeterDataMaximalElapsedTimeForRequest]];
 
-    NSMutableString *maximalElapsedTimeString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
-    [maximalElapsedTimeString replaceCharactersInRange:NSMakeRange(0, maximalElapsedTimeKey.length) withString:maximalElapsedTimeKey];
-    [maximalElapsedTimeString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - maximalElapsedTimeValue.length, maximalElapsedTimeValue.length) withString:maximalElapsedTimeValue];
+
+        minimalElapsedTimeString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
+        [minimalElapsedTimeString replaceCharactersInRange:NSMakeRange(0, minimalElapsedTimeKey.length) withString:minimalElapsedTimeKey];
+        [minimalElapsedTimeString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - minimalElapsedTimeValue.length, minimalElapsedTimeValue.length) withString:minimalElapsedTimeValue];
+
+
+        maximalElapsedTimeString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
+        [maximalElapsedTimeString replaceCharactersInRange:NSMakeRange(0, maximalElapsedTimeKey.length) withString:maximalElapsedTimeKey];
+        [maximalElapsedTimeString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - maximalElapsedTimeValue.length, maximalElapsedTimeValue.length) withString:maximalElapsedTimeValue];
+    }
 
 #pragma mark Image requests
 
-    NSString *imageRequestsKey = @"Requests:";
     NSString *imageRequestsValue = [[data valueForKey:AFNetworkingMeterDataImageRequests] stringValue];
+    BOOL atLeastOneImageRequestHasBeenMade = !!imageRequestsValue;
 
-    NSMutableString *imageRequestsString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
+    NSString *imageResponsesValue = [[data valueForKey:AFNetworkingMeterDataImageResponses] stringValue];
+    NSString *imageBytesReceivedValue = [[data valueForKey:AFNetworkingMeterDataImageBytesReceived] stringValue];
+
+
+    imageRequestsValue = imageRequestsValue ?: @"0";
+    imageResponsesValue = imageResponsesValue ?: @"0";
+    imageBytesReceivedValue = imageBytesReceivedValue ?: @"0";
+
+
+    NSString *imageRequestsKey = @"Requests:";
+    NSString *imageResponsesKey = @"Responses:";
+    NSString *imageBytesReceivedKey = @"Data received (bytes):";
+
+
+    imageRequestsString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
     [imageRequestsString replaceCharactersInRange:NSMakeRange(0, imageRequestsKey.length) withString:imageRequestsKey];
     [imageRequestsString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - imageRequestsValue.length, imageRequestsValue.length) withString:imageRequestsValue];
 
 
-    NSString *imageResponsesKey = @"Responses:";
-    NSString *imageResponsesValue = [[data valueForKey:AFNetworkingMeterDataImageResponses] stringValue];
-
-    NSMutableString *imageResponsesString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
+    imageResponsesString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
     [imageResponsesString replaceCharactersInRange:NSMakeRange(0, imageResponsesKey.length) withString:imageResponsesKey];
     [imageResponsesString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - imageResponsesValue.length, imageResponsesValue.length) withString:imageResponsesValue];
 
 
-    NSString *imageBytesReceivedKey = @"Data received (bytes):";
-    NSString *imageBytesReceivedValue = [[data valueForKey:AFNetworkingMeterDataImageBytesReceived] stringValue];
-    NSMutableString *imageBytesReceivedString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
+    imageBytesReceivedString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
     [imageBytesReceivedString replaceCharactersInRange:NSMakeRange(0, imageBytesReceivedKey.length) withString:imageBytesReceivedKey];
     [imageBytesReceivedString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - imageBytesReceivedValue.length, imageBytesReceivedValue.length) withString:imageBytesReceivedValue];
 
 #pragma mark Server errors
 
-    NSString *totalServerErrorsKey = @"Total:";
     NSString *totalServerErrorsValue = [[data valueForKey:AFNetworkingMeterDataTotalServerErrors] stringValue];
+    BOOL atLeastOneServerErrorHasOccured = !!totalServerErrorsValue;
 
+
+    NSString *totalServerErrorsKey = @"Total:";
     NSMutableString *totalServerErrorsString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
     [totalServerErrorsString replaceCharactersInRange:NSMakeRange(0, totalServerErrorsKey.length) withString:totalServerErrorsKey];
     [totalServerErrorsString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - totalServerErrorsValue.length, totalServerErrorsValue.length) withString:totalServerErrorsValue];
 
 
-    NSDictionary *serverErrorsValue = [data valueForKey:AFNetworkingMeterDataServerErrors];
-    NSMutableArray *serverErrorsStringsArray = [NSMutableArray array];
+    if (atLeastOneServerErrorHasOccured) {
+        NSDictionary *serverErrorsValue = [data valueForKey:AFNetworkingMeterDataServerErrors];
 
-    [serverErrorsValue enumerateKeysAndObjectsUsingBlock:^(NSString *statusCodeString, NSNumber *quantity, BOOL *stop) {
-        NSString *quantityString = [quantity stringValue];
+        NSMutableArray *serverErrorsStringsArray = [NSMutableArray array];
 
-        NSMutableString *errorString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
+        [serverErrorsValue enumerateKeysAndObjectsUsingBlock:^(NSString *statusCodeString, NSNumber *quantity, BOOL *stop) {
+            NSString *quantityString = [quantity stringValue];
 
-        [errorString replaceCharactersInRange:NSMakeRange(0, statusCodeString.length) withString:statusCodeString];
-        [errorString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - quantityString.length, quantityString.length) withString:quantityString];
+            NSMutableString *errorString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
 
-        [serverErrorsStringsArray addObject:errorString];
-    }];
+            [errorString replaceCharactersInRange:NSMakeRange(0, statusCodeString.length) withString:statusCodeString];
+            [errorString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - quantityString.length, quantityString.length) withString:quantityString];
 
-    NSString *serverErrorsString = [serverErrorsStringsArray componentsJoinedByString:@"\n"];
+            [serverErrorsStringsArray addObject:errorString];
+        }];
+
+        serverErrorsString = [[serverErrorsStringsArray componentsJoinedByString:@"\n"] mutableCopy];
+    }
 
 #pragma mark Connection errors
 
-    NSString *totalConnectionErrorsKey = @"Total:";
     NSString *totalConnectionErrorsValue = [[data valueForKey:AFNetworkingMeterDataTotalConnectionErrors] stringValue];
+    BOOL atLeastOneConnectionErrorHasOccured = !!totalConnectionErrorsValue;
 
-    NSMutableString *totalConnectionErrorsString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
+
+    NSString *totalConnectionErrorsKey = @"Total:";
+    totalConnectionErrorsString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
     [totalConnectionErrorsString replaceCharactersInRange:NSMakeRange(0, totalConnectionErrorsKey.length) withString:totalConnectionErrorsKey];
     [totalConnectionErrorsString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - totalConnectionErrorsValue.length, totalConnectionErrorsValue.length) withString:totalConnectionErrorsValue];
 
 
-    NSDictionary *connectionErrorsValue = [data valueForKey:AFNetworkingMeterDataConnectionErrors];
-    NSMutableArray *connectionErrorsStringsArray = [NSMutableArray array];
+    if (atLeastOneConnectionErrorHasOccured) {
+        NSDictionary *connectionErrorsValue = [data valueForKey:AFNetworkingMeterDataConnectionErrors];
 
-    [connectionErrorsValue enumerateKeysAndObjectsUsingBlock:^(NSString *NSURLErrorString, NSNumber *quantity, BOOL *stop) {
-        NSString *quantityString = [quantity stringValue];
+        NSMutableArray *connectionErrorsStringsArray = [NSMutableArray array];
 
-        NSMutableString *errorString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
+        [connectionErrorsValue enumerateKeysAndObjectsUsingBlock:^(NSString *NSURLErrorString, NSNumber *quantity, BOOL *stop) {
+            NSString *quantityString = [quantity stringValue];
 
-        [errorString replaceCharactersInRange:NSMakeRange(0, NSURLErrorString.length) withString:NSURLErrorString];
-        [errorString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - quantityString.length, quantityString.length) withString:quantityString];
+            NSMutableString *errorString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
 
-        [connectionErrorsStringsArray addObject:errorString];
-    }];
+            [errorString replaceCharactersInRange:NSMakeRange(0, NSURLErrorString.length) withString:NSURLErrorString];
+            [errorString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - quantityString.length, quantityString.length) withString:quantityString];
 
-    NSString *connectionErrorsString = [connectionErrorsStringsArray componentsJoinedByString:@"\n"];
+            [connectionErrorsStringsArray addObject:errorString];
+        }];
+
+        connectionErrorsString = [[connectionErrorsStringsArray componentsJoinedByString:@"\n"] mutableCopy];
+    }
 
 #pragma mark Aggregation of the formatted report
 
@@ -183,8 +226,9 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
     [formattedDataComponents addObject:@"\n"];
 
     [formattedDataComponents addObject:bytesReceivedString];
+    [formattedDataComponents addObject:@"\n"];
 
-    [formattedDataComponents addObject:@"\n\n"];
+    [formattedDataComponents addObject:@"\n"];
     [formattedDataComponents addObject:@"Elapsed time for request ..................."];
     [formattedDataComponents addObject:@"\n\n"];
 
@@ -192,38 +236,52 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
     [formattedDataComponents addObject:@"\n"];
 
     [formattedDataComponents addObject:maximalElapsedTimeString];
-
-    [formattedDataComponents addObject:@"\n\n"];
-    [formattedDataComponents addObject:@"Images ....................................."];
-    [formattedDataComponents addObject:@"\n\n"];
-
-    [formattedDataComponents addObject:imageRequestsString];
     [formattedDataComponents addObject:@"\n"];
 
-    [formattedDataComponents addObject:imageResponsesString];
+    if (self.lazyReporting == NO || atLeastOneImageRequestHasBeenMade) {
+        [formattedDataComponents addObject:@"\n"];
+        [formattedDataComponents addObject:@"Images ....................................."];
+        [formattedDataComponents addObject:@"\n\n"];
+
+        [formattedDataComponents addObject:imageRequestsString];
+        [formattedDataComponents addObject:@"\n"];
+
+        [formattedDataComponents addObject:imageResponsesString];
+        [formattedDataComponents addObject:@"\n"];
+
+        [formattedDataComponents addObject:imageBytesReceivedString];
+        [formattedDataComponents addObject:@"\n"];
+    }
+
+    if (self.lazyReporting == NO || atLeastOneServerErrorHasOccured) {
+        [formattedDataComponents addObject:@"\n"];
+        [formattedDataComponents addObject:@"Server errors .............................."];
+        [formattedDataComponents addObject:@"\n\n"];
+
+        [formattedDataComponents addObject:totalServerErrorsString];
+        [formattedDataComponents addObject:@"\n"];
+
+        if (atLeastOneServerErrorHasOccured) {
+            [formattedDataComponents addObject:serverErrorsString];
+            [formattedDataComponents addObject:@"\n"];
+        }
+    }
+
+    if (self.lazyReporting == NO || atLeastOneConnectionErrorHasOccured) {
+        [formattedDataComponents addObject:@"\n"];
+        [formattedDataComponents addObject:@"Connection errors (NSURLError) ............."];
+        [formattedDataComponents addObject:@"\n\n"];
+
+        [formattedDataComponents addObject:totalConnectionErrorsString];
+        [formattedDataComponents addObject:@"\n"];
+
+        if (atLeastOneConnectionErrorHasOccured) {
+            [formattedDataComponents addObject:connectionErrorsString];
+            [formattedDataComponents addObject:@"\n"];
+        }
+    }
+
     [formattedDataComponents addObject:@"\n"];
-
-    [formattedDataComponents addObject:imageBytesReceivedString];
-
-    [formattedDataComponents addObject:@"\n\n"];
-    [formattedDataComponents addObject:@"Server errors .............................."];
-    [formattedDataComponents addObject:@"\n\n"];
-
-    [formattedDataComponents addObject:totalServerErrorsString];
-    [formattedDataComponents addObject:@"\n"];
-
-    [formattedDataComponents addObject:serverErrorsString];
-
-    [formattedDataComponents addObject:@"\n\n"];
-    [formattedDataComponents addObject:@"Connection errors (NSURLError) ............."];
-    [formattedDataComponents addObject:@"\n\n"];
-
-    [formattedDataComponents addObject:totalConnectionErrorsString];
-    [formattedDataComponents addObject:@"\n"];
-
-    [formattedDataComponents addObject:connectionErrorsString];
-
-    [formattedDataComponents addObject:@"\n\n"];
     [formattedDataComponents addObject:@"============================================"];
     [formattedDataComponents addObject:@"\n\n"];
 
