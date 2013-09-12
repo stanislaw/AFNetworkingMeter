@@ -11,8 +11,6 @@
 
 @interface AFNetworkingMeterReportGenerator : NSObject
 
-@property BOOL lazyReporting;
-
-- (NSString *)formattedReportForData:(AFNetworkingMeterData *)data;
+- (NSString *)generateFormattedReportForData:(AFNetworkingMeterData *)data lazyReporting:(BOOL)lazyReporting;
 
 @end

@@ -39,6 +39,7 @@ extern void * AFNMHTTPRequestOperationStartDate;
     }
 
     self.data = [[AFNetworkingMeterData alloc] init];
+    self.lazyReporting = NO;
     
     return self;
 }
@@ -67,7 +68,7 @@ extern void * AFNMHTTPRequestOperationStartDate;
 }
 
 - (NSString *)formattedReport {
-    NSString *formattedReport = [self.reportGenerator formattedReportForData:self.data];
+    NSString *formattedReport = [self.reportGenerator generateFormattedReportForData:self.data lazyReporting:self.lazyReporting];
 
     return formattedReport;
 }

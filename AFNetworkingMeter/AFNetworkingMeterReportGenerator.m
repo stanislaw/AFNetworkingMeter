@@ -23,7 +23,7 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
 
 @implementation AFNetworkingMeterReportGenerator
 
-- (NSString *)formattedReportForData:(AFNetworkingMeterData *)data {
+- (NSString *)generateFormattedReportForData:(AFNetworkingMeterData *)data lazyReporting:(BOOL)lazyReporting {
     NSMutableArray *formattedDataComponents = [NSMutableArray array];
 
     NSString *stringWithLengthEqualToReportWidthAndFilledWithSpaces = NSStringFromCharacterAndLength(@" ", REPORT_WIDTH);
@@ -238,7 +238,7 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
     [formattedDataComponents addObject:maximalElapsedTimeString];
     [formattedDataComponents addObject:@"\n"];
 
-    if (self.lazyReporting == NO || atLeastOneImageRequestHasBeenMade) {
+    if (atLeastOneImageRequestHasBeenMade || lazyReporting == NO) {
         [formattedDataComponents addObject:@"\n"];
         [formattedDataComponents addObject:@"Images ....................................."];
         [formattedDataComponents addObject:@"\n\n"];
@@ -253,7 +253,7 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
         [formattedDataComponents addObject:@"\n"];
     }
 
-    if (self.lazyReporting == NO || atLeastOneServerErrorHasOccured) {
+    if (atLeastOneServerErrorHasOccured || lazyReporting == NO) {
         [formattedDataComponents addObject:@"\n"];
         [formattedDataComponents addObject:@"Server errors .............................."];
         [formattedDataComponents addObject:@"\n\n"];
@@ -267,7 +267,7 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
         }
     }
 
-    if (self.lazyReporting == NO || atLeastOneConnectionErrorHasOccured) {
+    if (atLeastOneConnectionErrorHasOccured || lazyReporting == NO) {
         [formattedDataComponents addObject:@"\n"];
         [formattedDataComponents addObject:@"Connection errors (NSURLError) ............."];
         [formattedDataComponents addObject:@"\n\n"];

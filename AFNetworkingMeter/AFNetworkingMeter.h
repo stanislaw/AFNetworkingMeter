@@ -12,6 +12,7 @@
 - (void)startMeter;
 - (void)stopMeter;
 
+@property BOOL lazyReporting;
 @property (readonly) NSString *formattedReport;
 
 @end
