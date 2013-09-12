@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'AFNetworkingMeter'
-  s.version  = '0.0.5'
+  s.version  = '0.0.6'
   # s.license  = 'MIT'
   # s.summary  = ''
   s.homepage = 'https://github.com/stanislaw/AFNetworkingMeter'
