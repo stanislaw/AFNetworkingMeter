@@ -55,9 +55,14 @@ NSLog(@"Let's see the HTTP Report: %@", HTTPReport);
 
 ## Credits
 
-* Stanislaw Pankevich
-* Marina Balioura (@mettta) - assistance in working out the design of
-the formatted report AFNetworkingMeter produces. Invaluable!
+AFNetworkingMeter was created by Stanislaw Pankevich.
+
+Thanks to Marina Balioura (@mettta) for her assistance in working out the design of
+the formatted report `AFNetworkingMeter` produces. Invaluable!
+
+`AFNetworkingMeter` is a plugin for [AFNetworking](https://github.com/AFNetworking/AFNetworking) library created by [Mattt Thompson](http://github.com/mattt).
+
+AFNetworkingMeter is inspired by the design of another `AFNetworking` plugin [AFHTTPRequestOperationLogger](https://github.com/AFNetworking/AFHTTPRequestOperationLogger), that was as well created by [Mattt Thompson](http://github.com/mattt).
 
 ## Copyright
 
