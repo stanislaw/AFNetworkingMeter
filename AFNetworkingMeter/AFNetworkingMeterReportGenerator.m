@@ -147,6 +147,7 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
     NSString *totalServerErrorsValue = [[data valueForKey:AFNetworkingMeterDataTotalServerErrors] stringValue];
     BOOL atLeastOneServerErrorHasOccured = !!totalServerErrorsValue;
 
+    totalServerErrorsValue = totalServerErrorsValue ?: @"0";
 
     NSString *totalServerErrorsKey = @"Total:";
     NSMutableString *totalServerErrorsString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
@@ -178,7 +179,8 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
     NSString *totalConnectionErrorsValue = [[data valueForKey:AFNetworkingMeterDataTotalConnectionErrors] stringValue];
     BOOL atLeastOneConnectionErrorHasOccured = !!totalConnectionErrorsValue;
 
-
+    totalConnectionErrorsValue = totalConnectionErrorsValue ?: @"0";
+    
     NSString *totalConnectionErrorsKey = @"Total:";
     totalConnectionErrorsString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
     [totalConnectionErrorsString replaceCharactersInRange:NSMakeRange(0, totalConnectionErrorsKey.length) withString:totalConnectionErrorsKey];
