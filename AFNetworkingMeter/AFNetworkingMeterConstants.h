@@ -34,54 +34,89 @@ static NSDictionary * RFC2616_HTTPStatusCodesAndReasonPhrases() {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         RFC2616_HTTPStatusCodesAndReasonPhrases = @{
-            @"100": @"Continue",
-            @"101": @"Switching Protocols",
+            @(100): @"Continue",
+            @(101): @"Switching Protocols",
 
-            @"200": @"OK",
-            @"201": @"Created",
-            @"202": @"Accepted",
-            @"203": @"Non-Authoritative Information",
-            @"204": @"No Content",
-            @"205": @"Reset Content",
-            @"206": @"Partial Content",
+            @(200): @"OK",
+            @(201): @"Created",
+            @(202): @"Accepted",
+            @(203): @"Non-Authoritative Information",
+            @(204): @"No Content",
+            @(205): @"Reset Content",
+            @(206): @"Partial Content",
 
-            @"300": @"Multiple Choices",
-            @"301": @"Moved Permanently",
-            @"302": @"Found",
-            @"303": @"See Other",
-            @"304": @"Not Modified",
-            @"305": @"Use Proxy",
-            @"307": @"Temporary Redirect",
+            @(300): @"Multiple Choices",
+            @(301): @"Moved Permanently",
+            @(302): @"Found",
+            @(303): @"See Other",
+            @(304): @"Not Modified",
+            @(305): @"Use Proxy",
+            @(307): @"Temporary Redirect",
 
-            @"400": @"Bad Request",
-            @"401": @"Unauthorized",
-            @"402": @"Payment Required",
-            @"403": @"Forbidden",
-            @"404": @"Not Found",
-            @"405": @"Method Not Allowed",
-            @"406": @"Not Acceptable",
-            @"407": @"Proxy Authentication Required",
-            @"408": @"Request Time-out",
-            @"409": @"Conflict",
-            @"410": @"Gone",
-            @"411": @"Length Required",
-            @"412": @"Precondition Failed",
-            @"413": @"Request Entity Too Large",
-            @"414": @"Request-URI Too Large",
-            @"415": @"Unsupported Media Type",
-            @"416": @"Requested range not satisfiable",
-            @"417": @"Expectation Failed",
+            @(400): @"Bad Request",
+            @(401): @"Unauthorized",
+            @(402): @"Payment Required",
+            @(403): @"Forbidden",
+            @(404): @"Not Found",
+            @(405): @"Method Not Allowed",
+            @(406): @"Not Acceptable",
+            @(407): @"Proxy Authentication Required",
+            @(408): @"Request Time-out",
+            @(409): @"Conflict",
+            @(410): @"Gone",
+            @(411): @"Length Required",
+            @(412): @"Precondition Failed",
+            @(413): @"Request Entity Too Large",
+            @(414): @"Request-URI Too Large",
+            @(415): @"Unsupported Media Type",
+            @(416): @"Requested range not satisfiable",
+            @(417): @"Expectation Failed",
 
-            @"500": @"Internal Server Error",
-            @"501": @"Not Implemented",
-            @"502": @"Bad Gateway",
-            @"503": @"Service Unavailable",
-            @"504": @"Gateway Time-out",
-            @"505": @"HTTP Version not supported"
+            @(500): @"Internal Server Error",
+            @(501): @"Not Implemented",
+            @(502): @"Bad Gateway",
+            @(503): @"Service Unavailable",
+            @(504): @"Gateway Time-out",
+            @(505): @"HTTP Version not supported"
         };
     });
 
     return RFC2616_HTTPStatusCodesAndReasonPhrases;
 };
+
+static inline NSDictionary * NSURLErrorCodes() {
+    static NSDictionary *NSURLErrorCodes;
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSURLErrorCodes = @{
+            @(NSURLErrorCancelled)                     : @"NSURLErrorCancelled",
+            @(NSURLErrorBadURL)                        : @"NSURLErrorBadURL",
+            @(NSURLErrorTimedOut)                      : @"NSURLErrorTimedOut",
+            @(NSURLErrorUnsupportedURL)                : @"NSURLErrorUnsupportedURL",
+            @(NSURLErrorCannotFindHost)                : @"NSURLErrorCannotFindHost",
+            @(NSURLErrorCannotConnectToHost)           : @"NSURLErrorCannotConnectToHost",
+            @(NSURLErrorNetworkConnectionLost)         : @"NSURLErrorNetworkConnectionLost",
+            @(NSURLErrorDNSLookupFailed)               : @"NSURLErrorDNSLookupFailed",
+            @(NSURLErrorHTTPTooManyRedirects)          : @"NSURLErrorHTTPTooManyRedirects",
+            @(NSURLErrorResourceUnavailable)           : @"NSURLErrorResourceUnavailable",
+            @(NSURLErrorNotConnectedToInternet)        : @"NSURLErrorNotConnectedToInternet",
+            @(NSURLErrorRedirectToNonExistentLocation) : @"NSURLErrorRedirectToNonExistentLocation",
+            @(NSURLErrorBadServerResponse)             : @"NSURLErrorBadServerResponse",
+            @(NSURLErrorUserCancelledAuthentication)   : @"NSURLErrorUserCancelledAuthentication",
+            @(NSURLErrorUserAuthenticationRequired)    : @"NSURLErrorUserAuthenticationRequired",
+            @(NSURLErrorZeroByteResource)              : @"NSURLErrorZeroByteResource",
+            @(NSURLErrorCannotDecodeRawData)           : @"NSURLErrorCannotDecodeRawData",
+            @(NSURLErrorCannotDecodeContentData)       : @"NSURLErrorCannotDecodeContentData",
+            @(NSURLErrorCannotParseResponse)           : @"NSURLErrorCannotParseResponse",
+            @(NSURLErrorFileIsDirectory)               : @"NSURLErrorFileIsDirectory",
+            @(NSURLErrorFileDoesNotExist)              : @"NSURLErrorFileDoesNotExist",
+            @(NSURLErrorNoPermissionsToReadFile)       : @"NSURLErrorNoPermissionsToReadFile",
+            @(NSURLErrorDataLengthExceedsMaximum)      : @"NSURLErrorDataLengthExceedsMaximum",
+        };
+    });
+
+    return NSURLErrorCodes;
+}
 
 #endif
