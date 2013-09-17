@@ -73,7 +73,7 @@ extern void * AFNMHTTPRequestOperationStartDate;
     NSMutableDictionary *reportOptions = [NSMutableDictionary dictionary];
 
     if (self.includesHTTPHeadersSize) {
-        [reportOptions setValue:@(YES) forKey:AFNetworkingMeterOptionIncludeHTTPHeadersSize];
+        [reportOptions setValue:@(YES) forKey:AFNetworkingMeterOptionIncludesHTTPHeadersSize];
     }
 
     if (self.lazyReporting) {

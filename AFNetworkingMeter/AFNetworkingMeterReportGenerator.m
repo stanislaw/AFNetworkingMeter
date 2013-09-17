@@ -24,7 +24,7 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
 @implementation AFNetworkingMeterReportGenerator
 
 - (NSString *)generateFormattedReportForData:(AFNetworkingMeterData *)data options:(NSDictionary *)options {
-    BOOL includeHTTPHeadersSize = [options.allKeys containsObject:AFNetworkingMeterOptionIncludeHTTPHeadersSize];
+    BOOL includeHTTPHeadersSize = [options.allKeys containsObject:AFNetworkingMeterOptionIncludesHTTPHeadersSize];
 
     NSMutableArray *formattedDataComponents = [NSMutableArray array];
 

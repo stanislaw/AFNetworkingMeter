@@ -12,7 +12,7 @@
 #pragma mark
 #pragma mark AFNetworkingMeter options
 
-static NSString * const AFNetworkingMeterOptionIncludeHTTPHeadersSize = @"AFNetworkingMeterOptionIncludeHTTPHeadersSize";
+static NSString * const AFNetworkingMeterOptionIncludesHTTPHeadersSize = @"AFNetworkingMeterOptionIncludesHTTPHeadersSize";
 static NSString * const AFNetworkingMeterOptionLazyReporting = @"AFNetworkingMeterOptionLazyReporting";
 
 #pragma mark
