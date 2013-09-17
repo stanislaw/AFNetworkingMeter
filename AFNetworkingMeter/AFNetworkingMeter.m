@@ -1,5 +1,6 @@
 #import "AFNetworkingMeter.h"
 #import "AFNetworkingMeterReportGenerator.h"
+#import "AFNetworkingMeterConstants.h"
 
 #import <AFNetworking/AFHTTPRequestOperation.h>
 #import <AFNetworking/AFImageRequestOperation.h>
@@ -34,11 +35,12 @@ extern void * AFNMHTTPRequestOperationStartDate;
 
 - (id)init {
     self = [super init];
-    if (!self) {
-        return nil;
-    }
+
+    if (self == nil) return nil;
 
     self.data = [[AFNetworkingMeterData alloc] init];
+
+    self.includesHTTPHeadersSize = YES;
     self.lazyReporting = NO;
     
     return self;
@@ -68,7 +70,17 @@ extern void * AFNMHTTPRequestOperationStartDate;
 }
 
 - (NSString *)formattedReport {
-    NSString *formattedReport = [self.reportGenerator generateFormattedReportForData:self.data lazyReporting:self.lazyReporting];
+    NSMutableDictionary *reportOptions = [NSMutableDictionary dictionary];
+
+    if (self.includesHTTPHeadersSize) {
+        [reportOptions setValue:@(YES) forKey:AFNetworkingMeterOptionIncludeHTTPHeadersSize];
+    }
+
+    if (self.lazyReporting) {
+        [reportOptions setValue:@(YES) forKey:AFNetworkingMeterOptionLazyReporting];
+    }
+
+    NSString *formattedReport = [self.reportGenerator generateFormattedReportForData:self.data options:reportOptions];
 
     return formattedReport;
 }

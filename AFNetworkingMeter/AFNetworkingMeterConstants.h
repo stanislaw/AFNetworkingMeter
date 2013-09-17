@@ -9,14 +9,31 @@
 #ifndef AFNetworkingMeterApp_AFNetworkingMeterConstants_h
 #define AFNetworkingMeterApp_AFNetworkingMeterConstants_h
 
+#pragma mark
+#pragma mark AFNetworkingMeter options
+
+static NSString * const AFNetworkingMeterOptionIncludeHTTPHeadersSize = @"AFNetworkingMeterOptionIncludeHTTPHeadersSize";
+static NSString * const AFNetworkingMeterOptionLazyReporting = @"AFNetworkingMeterOptionLazyReporting";
+
+#pragma mark
+#pragma mark AFNetworkingMeter data
+
 static NSString * const AFNetworkingMeterDataRequests = @"Requests";
 static NSString * const AFNetworkingMeterDataResponses = @"Responses";
+
+static NSString * const AFNetworkingMeterDataHeaderBytesReceived = @"Header data received (bytes)";
+static NSString * const AFNetworkingMeterDataHeaderBytesSent = @"Header data sent (bytes)";
+
+static NSString * const AFNetworkingMeterDataBodyBytesReceived = @"Body data received (bytes)";
+static NSString * const AFNetworkingMeterDataBodyBytesSent = @"Body data sent (bytes)";
 
 static NSString * const AFNetworkingMeterDataBytesReceived = @"Received (bytes)";
 static NSString * const AFNetworkingMeterDataBytesSent = @"Sent (bytes)";
 
+
 static NSString * const AFNetworkingMeterDataMinimalElapsedTimeForRequest = @"Minimal elapsed time for request (seconds)";
 static NSString * const AFNetworkingMeterDataMaximalElapsedTimeForRequest = @"Maximal elapsed time for request (seconds)";
+
 
 static NSString * const AFNetworkingMeterDataTotalServerErrors = @"Total server errors";
 static NSString * const AFNetworkingMeterDataServerErrors = @"Server errors";
@@ -24,9 +41,13 @@ static NSString * const AFNetworkingMeterDataServerErrors = @"Server errors";
 static NSString * const AFNetworkingMeterDataTotalConnectionErrors = @"Total connection errors";
 static NSString * const AFNetworkingMeterDataConnectionErrors = @"Connection errors";
 
+
 static NSString * const AFNetworkingMeterDataImageRequests = @"Image requests";
 static NSString * const AFNetworkingMeterDataImageResponses = @"Image responses";
 static NSString * const AFNetworkingMeterDataImageBytesReceived = @"Image data received (bytes)";
+
+#pragma mark
+#pragma mark RFC 2616 HTTP status codes and reason phrases
 
 static NSDictionary * RFC2616_HTTPStatusCodesAndReasonPhrases() {
     static NSDictionary * RFC2616_HTTPStatusCodesAndReasonPhrases;
@@ -83,6 +104,9 @@ static NSDictionary * RFC2616_HTTPStatusCodesAndReasonPhrases() {
 
     return RFC2616_HTTPStatusCodesAndReasonPhrases;
 };
+
+#pragma mark
+#pragma mark NSURLError humanized codes
 
 static inline NSDictionary * NSURLErrorCodes() {
     static NSDictionary *NSURLErrorCodes;

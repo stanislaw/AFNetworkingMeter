@@ -35,8 +35,17 @@
 - (void)collectRequestDataFromAFHTTPRequestOperation:(AFHTTPRequestOperation *)operation {
     [self addNumberValue:@(1) forKey:AFNetworkingMeterDataRequests];
 
-    if ([operation.request HTTPBody]) {
-        [self addNumberValue:@(operation.request.HTTPBody.length) forKey:AFNetworkingMeterDataBytesSent];
+    NSDictionary *HTTPHeaders;
+    if ((HTTPHeaders = operation.request.allHTTPHeaderFields)) {
+        NSData *HTTPHeadersData = [NSPropertyListSerialization dataFromPropertyList:HTTPHeaders
+                                                          format:NSPropertyListBinaryFormat_v1_0 errorDescription:NULL];
+
+        [self addNumberValue:@(HTTPHeadersData.length) forKey:AFNetworkingMeterDataHeaderBytesSent];
+    }
+
+    NSData *HTTPBody;
+    if ((HTTPBody = [operation.request HTTPBody])) {
+        [self addNumberValue:@(HTTPBody.length) forKey:AFNetworkingMeterDataBodyBytesSent];
     }
 }
 
@@ -73,7 +82,15 @@
     } else {
     }
 
-    [self addNumberValue:@(operation.responseData.length) forKey:AFNetworkingMeterDataBytesReceived];
+    NSDictionary *HTTPHeaders;
+    if ((HTTPHeaders = operation.response.allHeaderFields)) {
+        NSData *HTTPHeadersData = [NSPropertyListSerialization dataFromPropertyList:HTTPHeaders
+                                                                             format:NSPropertyListBinaryFormat_v1_0 errorDescription:NULL];
+
+        [self addNumberValue:@(HTTPHeadersData.length) forKey:AFNetworkingMeterDataHeaderBytesReceived];
+    }
+
+    [self addNumberValue:@(operation.responseData.length) forKey:AFNetworkingMeterDataBodyBytesReceived];
 }
 
 #pragma mark

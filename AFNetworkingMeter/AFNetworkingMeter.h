@@ -13,6 +13,11 @@
 - (void)stopMeter;
 
 @property BOOL lazyReporting;
+@property BOOL includesHTTPHeadersSize;
+
+// TODO
+// @property BOOL includesImageTrafficIntoOverallTraffic;
+
 @property (readonly) NSString *formattedReport;
 
 @end

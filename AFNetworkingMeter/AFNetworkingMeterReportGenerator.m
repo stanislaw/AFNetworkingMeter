@@ -23,39 +23,53 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
 
 @implementation AFNetworkingMeterReportGenerator
 
-- (NSString *)generateFormattedReportForData:(AFNetworkingMeterData *)data lazyReporting:(BOOL)lazyReporting {
+- (NSString *)generateFormattedReportForData:(AFNetworkingMeterData *)data options:(NSDictionary *)options {
+    BOOL includeHTTPHeadersSize = [options.allKeys containsObject:AFNetworkingMeterOptionIncludeHTTPHeadersSize];
+
     NSMutableArray *formattedDataComponents = [NSMutableArray array];
 
     NSString *stringWithLengthEqualToReportWidthAndFilledWithSpaces = NSStringFromCharacterAndLength(@" ", REPORT_WIDTH);
 
-#pragma mark Summary
     NSMutableString *requestsString,
-                    *responsesString,
-                    *minimalElapsedTimeString,
-                    *maximalElapsedTimeString,
-                    *imageRequestsString,
-                    *imageResponsesString,
-                    *imageBytesReceivedString,
-                    *totalConnectionErrorsString,
-                    *connectionErrorsString,
-                    *serverErrorsString;
+    *responsesString,
+    *minimalElapsedTimeString,
+    *maximalElapsedTimeString,
+    *imageRequestsString,
+    *imageResponsesString,
+    *imageBytesReceivedString,
+    *totalConnectionErrorsString,
+    *connectionErrorsString,
+    *serverErrorsString;
+
+#pragma mark Summary
+
+    NSDecimalNumber *requestsNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataRequests] decimalValue]];
+    NSDecimalNumber *responsesNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataResponses] decimalValue]];
+
+    BOOL atLeastOneRequestHasBeenMade = [requestsNumber compare:[NSDecimalNumber zero]] == NSOrderedDescending;
+
+    NSString *requestsValue = [requestsNumber stringValue];
+    NSString *responsesValue = [responsesNumber stringValue];
 
 
-    NSString *requestsValue = [[data valueForKey:AFNetworkingMeterDataRequests] stringValue];
-    NSString *responsesValue = [[data valueForKey:AFNetworkingMeterDataResponses] stringValue];
-    NSString *bytesSentValue = [[data valueForKey:AFNetworkingMeterDataBytesSent] stringValue];
-    NSString *bytesReceivedValue = [[data valueForKey:AFNetworkingMeterDataBytesReceived] stringValue];
+    NSDecimalNumber *bodyBytesSentNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataBodyBytesSent] decimalValue]];
+    NSDecimalNumber *bodyBytesReceivedNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataBodyBytesSent] decimalValue]];
 
+    NSDecimalNumber *bytesSentNumber = [bodyBytesSentNumber copy];
+    NSDecimalNumber *bytesReceivedNumber = [bodyBytesReceivedNumber copy];
 
-    BOOL atLeastOneRequestHasBeenMade = !!requestsValue && !!responsesValue;
+    if (includeHTTPHeadersSize) {
+        NSDecimalNumber *headerBytesSentNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataHeaderBytesSent] decimalValue]];
+        NSDecimalNumber *headerBytesReceivedNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataHeaderBytesSent] decimalValue]];
 
+        bytesSentNumber = [bytesSentNumber decimalNumberByAdding:headerBytesSentNumber];
+        bytesReceivedNumber = [bytesReceivedNumber decimalNumberByAdding:headerBytesReceivedNumber];
+    }
 
-    requestsValue = requestsValue ?: @"0";
-    responsesValue = responsesValue ?: @"0";
-    bytesSentValue = bytesSentValue ?: @"0";
-    bytesReceivedValue = bytesReceivedValue ?: @"0";
+    NSString *bytesSentValue = [bytesSentNumber stringValue];
+    NSString *bytesReceivedValue = [bytesReceivedNumber stringValue];
 
-
+    
     NSString *requestsKey = @"Requests:";
     NSString *responsesKey = @"Responses:";
     NSString *bytesSentKey = @"Sent (bytes):";
@@ -111,16 +125,15 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
 
 #pragma mark Image requests
 
-    NSString *imageRequestsValue = [[data valueForKey:AFNetworkingMeterDataImageRequests] stringValue];
-    BOOL atLeastOneImageRequestHasBeenMade = !!imageRequestsValue;
+    NSDecimalNumber *imageRequestsNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataImageRequests] decimalValue]];
+    NSString *imageRequestsValue = [imageRequestsNumber stringValue];
+    BOOL atLeastOneImageRequestHasBeenMade = [imageRequestsNumber compare:[NSDecimalNumber zero]] == NSOrderedDescending;
 
-    NSString *imageResponsesValue = [[data valueForKey:AFNetworkingMeterDataImageResponses] stringValue];
-    NSString *imageBytesReceivedValue = [[data valueForKey:AFNetworkingMeterDataImageBytesReceived] stringValue];
+    NSDecimalNumber *imageResponsesNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataImageResponses] decimalValue]];
+    NSString *imageResponsesValue = [imageResponsesNumber stringValue];
 
-
-    imageRequestsValue = imageRequestsValue ?: @"0";
-    imageResponsesValue = imageResponsesValue ?: @"0";
-    imageBytesReceivedValue = imageBytesReceivedValue ?: @"0";
+    NSDecimalNumber *imageBytesReceivedNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataImageBytesReceived] decimalValue]];
+    NSString *imageBytesReceivedValue = [imageBytesReceivedNumber stringValue];
 
 
     NSString *imageRequestsKey = @"Requests:";
@@ -207,6 +220,7 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
     }
 
 #pragma mark Aggregation of the formatted report
+    BOOL lazyReporting = [options.allKeys containsObject:AFNetworkingMeterOptionLazyReporting];
 
     NSString *headerTop = NSStringFromCharacterAndLength(@"=", REPORT_WIDTH);
     NSString *headerTitle = @"   AFNetworkingMeter  -  formatted report   ";
