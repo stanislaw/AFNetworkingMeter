@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'AFNetworkingMeter'
-  s.version  = '0.0.6'
+  s.version  = '0.0.7'
   # s.license  = 'MIT'
   # s.summary  = ''
   s.homepage = 'https://github.com/stanislaw/AFNetworkingMeter'
@@ -15,5 +15,5 @@ Pod::Spec.new do |s|
 
   s.osx.deployment_target = '10.7'
 
-  s.dependency 'AFNetworking', '<= 1.3.1'
+  s.dependency 'AFNetworking'
 end
