@@ -15,6 +15,9 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
     return [@"" stringByPaddingToLength:length withString:character startingAtIndex:0];
 }
 
+@interface AFNetworkingMeterReportGenerator ()
+@end
+
 @implementation AFNetworkingMeterReportGenerator
 
 - (NSString *)generateFormattedReportForData:(AFNetworkingMeterData *)data options:(NSDictionary *)options {
@@ -25,15 +28,15 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
     NSString *stringWithLengthEqualToReportWidthAndFilledWithSpaces = NSStringFromCharacterAndLength(@" ", REPORT_WIDTH);
 
     NSMutableString *requestsString,
-    *responsesString,
-    *minimalElapsedTimeString,
-    *maximalElapsedTimeString,
-    *imageRequestsString,
-    *imageResponsesString,
-    *imageBytesReceivedString,
-    *totalConnectionErrorsString,
-    *connectionErrorsString,
-    *serverErrorsString;
+                    *responsesString,
+                    *minimalElapsedTimeString,
+                    *maximalElapsedTimeString,
+                    *imageRequestsString,
+                    *imageResponsesString,
+                    *imageBytesReceivedString,
+                    *totalConnectionErrorsString,
+                    *connectionErrorsString,
+                    *serverErrorsString;
 
 #pragma mark Summary
 
