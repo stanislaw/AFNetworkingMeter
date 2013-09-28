@@ -12,13 +12,7 @@
 #define REPORT_WIDTH 44
 
 NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length) {
-    NSMutableString *string = [NSMutableString stringWithCapacity:length];
-
-    for (int i = 0; i < length; i++) {
-        [string insertString:character atIndex:0];
-    }
-
-    return [string copy];
+    return [@"" stringByPaddingToLength:length withString:character startingAtIndex:0];
 }
 
 @implementation AFNetworkingMeterReportGenerator
