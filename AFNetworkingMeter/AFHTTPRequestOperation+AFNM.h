@@ -8,7 +8,7 @@
 
 #import "AFHTTPRequestOperation.h"
 
-@interface AFHTTPRequestOperation (StartDate)
+@interface AFHTTPRequestOperation (AFNM)
 
 - (NSDate *)AFNMStartDate;
 - (void)setAFNMStartDate:(NSDate *)date;

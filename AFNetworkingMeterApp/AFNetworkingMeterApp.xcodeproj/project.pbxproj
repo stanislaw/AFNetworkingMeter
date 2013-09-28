@@ -32,8 +32,8 @@
 		86C6447017C518B600570DFB /* AFNetworkingMeter.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6446B17C4FEFD00570DFB /* AFNetworkingMeter.m */; };
 		86C6447317C524D100570DFB /* AFNetworkingMeterData.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6447217C524D100570DFB /* AFNetworkingMeterData.m */; };
 		86C6447417C5298A00570DFB /* AFNetworkingMeterData.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6447217C524D100570DFB /* AFNetworkingMeterData.m */; };
-		86C6447817C550CC00570DFB /* AFHTTPRequestOperation+StartDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6447717C550CB00570DFB /* AFHTTPRequestOperation+StartDate.m */; };
-		86C6447917C5521900570DFB /* AFHTTPRequestOperation+StartDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6447717C550CB00570DFB /* AFHTTPRequestOperation+StartDate.m */; };
+		86C6447817C550CC00570DFB /* AFHTTPRequestOperation+AFNM.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6447717C550CB00570DFB /* AFHTTPRequestOperation+AFNM.m */; };
+		86C6447917C5521900570DFB /* AFHTTPRequestOperation+AFNM.m in Sources */ = {isa = PBXBuildFile; fileRef = 86C6447717C550CB00570DFB /* AFHTTPRequestOperation+AFNM.m */; };
 		ADABB829E0AD4426812BA12E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9F0842D6E4486C867BBA7A /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -83,8 +83,8 @@
 		86C6446E17C518A400570DFB /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		86C6447117C524D100570DFB /* AFNetworkingMeterData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkingMeterData.h; sourceTree = "<group>"; };
 		86C6447217C524D100570DFB /* AFNetworkingMeterData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkingMeterData.m; sourceTree = "<group>"; };
-		86C6447617C550CB00570DFB /* AFHTTPRequestOperation+StartDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFHTTPRequestOperation+StartDate.h"; sourceTree = "<group>"; };
-		86C6447717C550CB00570DFB /* AFHTTPRequestOperation+StartDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AFHTTPRequestOperation+StartDate.m"; sourceTree = "<group>"; };
+		86C6447617C550CB00570DFB /* AFHTTPRequestOperation+AFNM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFHTTPRequestOperation+AFNM.h"; sourceTree = "<group>"; };
+		86C6447717C550CB00570DFB /* AFHTTPRequestOperation+AFNM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AFHTTPRequestOperation+AFNM.m"; sourceTree = "<group>"; };
 		BF9F0842D6E4486C867BBA7A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -205,8 +205,8 @@
 				86C6446B17C4FEFD00570DFB /* AFNetworkingMeter.m */,
 				86C6447117C524D100570DFB /* AFNetworkingMeterData.h */,
 				86C6447217C524D100570DFB /* AFNetworkingMeterData.m */,
-				86C6447617C550CB00570DFB /* AFHTTPRequestOperation+StartDate.h */,
-				86C6447717C550CB00570DFB /* AFHTTPRequestOperation+StartDate.m */,
+				86C6447617C550CB00570DFB /* AFHTTPRequestOperation+AFNM.h */,
+				86C6447717C550CB00570DFB /* AFHTTPRequestOperation+AFNM.m */,
 				868AE28517DE4B1500B499BC /* AFNetworkingMeterReportGenerator.h */,
 				868AE28617DE4B1500B499BC /* AFNetworkingMeterReportGenerator.m */,
 				868AE28817DE4D1A00B499BC /* AFNetworkingMeterConstants.h */,
@@ -397,7 +397,7 @@
 				86C6444B17C4FEF200570DFB /* ViewController.m in Sources */,
 				86C6446C17C4FEFD00570DFB /* AFNetworkingMeter.m in Sources */,
 				86C6447317C524D100570DFB /* AFNetworkingMeterData.m in Sources */,
-				86C6447817C550CC00570DFB /* AFHTTPRequestOperation+StartDate.m in Sources */,
+				86C6447817C550CC00570DFB /* AFHTTPRequestOperation+AFNM.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,7 +409,7 @@
 				86C6447017C518B600570DFB /* AFNetworkingMeter.m in Sources */,
 				86C6447417C5298A00570DFB /* AFNetworkingMeterData.m in Sources */,
 				868AE28B17DE4E6A00B499BC /* AFNetworkingMeterReportGenerator.m in Sources */,
-				86C6447917C5521900570DFB /* AFHTTPRequestOperation+StartDate.m in Sources */,
+				86C6447917C5521900570DFB /* AFHTTPRequestOperation+AFNM.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

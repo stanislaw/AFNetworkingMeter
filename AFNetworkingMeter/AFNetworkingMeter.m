@@ -5,7 +5,7 @@
 #import <AFNetworking/AFHTTPRequestOperation.h>
 #import <AFNetworking/AFImageRequestOperation.h>
 
-#import "AFHTTPRequestOperation+StartDate.h"
+#import "AFHTTPRequestOperation+AFNM.h"
 
 extern void * AFNMHTTPRequestOperationStartDate;
 

@@ -16,9 +16,12 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
 }
 
 @interface AFNetworkingMeterReportGenerator ()
+@property (readonly) NSDictionary *dataKeysMapping;
 @end
 
 @implementation AFNetworkingMeterReportGenerator
+
+@synthesize dataKeysMapping = _dataKeysMapping;
 
 - (NSString *)generateFormattedReportForData:(AFNetworkingMeterData *)data options:(NSDictionary *)options {
     BOOL includeHTTPHeadersSize = [options.allKeys containsObject:AFNetworkingMeterOptionIncludesHTTPHeadersSize];
@@ -40,8 +43,8 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
 
 #pragma mark Summary
 
-    NSDecimalNumber *requestsNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataRequests] decimalValue]];
-    NSDecimalNumber *responsesNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataResponses] decimalValue]];
+    NSDecimalNumber *requestsNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataKeyRequests] decimalValue]];
+    NSDecimalNumber *responsesNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataKeyResponses] decimalValue]];
 
     BOOL atLeastOneRequestHasBeenMade = [requestsNumber compare:[NSDecimalNumber zero]] == NSOrderedDescending;
 
@@ -49,15 +52,15 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
     NSString *responsesValue = [responsesNumber stringValue];
 
 
-    NSDecimalNumber *bodyBytesSentNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataBodyBytesSent] decimalValue]];
-    NSDecimalNumber *bodyBytesReceivedNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataBodyBytesSent] decimalValue]];
+    NSDecimalNumber *bodyBytesSentNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataKeyBodyBytesSent] decimalValue]];
+    NSDecimalNumber *bodyBytesReceivedNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataKeyBodyBytesSent] decimalValue]];
 
     NSDecimalNumber *bytesSentNumber = [bodyBytesSentNumber copy];
     NSDecimalNumber *bytesReceivedNumber = [bodyBytesReceivedNumber copy];
 
     if (includeHTTPHeadersSize) {
-        NSDecimalNumber *headerBytesSentNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataHeaderBytesSent] decimalValue]];
-        NSDecimalNumber *headerBytesReceivedNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataHeaderBytesSent] decimalValue]];
+        NSDecimalNumber *headerBytesSentNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataKeyHeaderBytesSent] decimalValue]];
+        NSDecimalNumber *headerBytesReceivedNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataKeyHeaderBytesSent] decimalValue]];
 
         bytesSentNumber = [bytesSentNumber decimalNumberByAdding:headerBytesSentNumber];
         bytesReceivedNumber = [bytesReceivedNumber decimalNumberByAdding:headerBytesReceivedNumber];
@@ -67,10 +70,10 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
     NSString *bytesReceivedValue = [bytesReceivedNumber stringValue];
 
     
-    NSString *requestsKey = @"Requests:";
-    NSString *responsesKey = @"Responses:";
-    NSString *bytesSentKey = @"Sent (bytes):";
-    NSString *bytesReceivedKey = @"Received (bytes):";
+    NSString *requestsKey = self.dataKeysMapping[AFNetworkingMeterDataKeyRequests];
+    NSString *responsesKey = self.dataKeysMapping[AFNetworkingMeterDataKeyResponses];
+    NSString *bytesSentKey = self.dataKeysMapping[AFNetworkingMeterDataKeyBytesSent];
+    NSString *bytesReceivedKey = self.dataKeysMapping[AFNetworkingMeterDataKeyBytesReceived];
 
 
     requestsString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
@@ -102,12 +105,12 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
         numberFormatter.minimumIntegerDigits = 1;
 
 
-        NSString *minimalElapsedTimeKey = @"Min (seconds):";
-        NSString *maximalElapsedTimeKey = @"Max (seconds):";
+        NSString *minimalElapsedTimeKey = self.dataKeysMapping[AFNetworkingMeterDataKeyMinimalElapsedTimeForRequest];
+        NSString *maximalElapsedTimeKey = self.dataKeysMapping[AFNetworkingMeterDataKeyMaximalElapsedTimeForRequest];
 
 
-        NSString *minimalElapsedTimeValue = [numberFormatter stringFromNumber:[data valueForKey:AFNetworkingMeterDataMinimalElapsedTimeForRequest]];
-        NSString *maximalElapsedTimeValue = [numberFormatter stringFromNumber:[data valueForKey:AFNetworkingMeterDataMaximalElapsedTimeForRequest]];
+        NSString *minimalElapsedTimeValue = [numberFormatter stringFromNumber:[data valueForKey:AFNetworkingMeterDataKeyMinimalElapsedTimeForRequest]];
+        NSString *maximalElapsedTimeValue = [numberFormatter stringFromNumber:[data valueForKey:AFNetworkingMeterDataKeyMaximalElapsedTimeForRequest]];
 
 
         minimalElapsedTimeString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
@@ -122,20 +125,20 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
 
 #pragma mark Image requests
 
-    NSDecimalNumber *imageRequestsNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataImageRequests] decimalValue]];
+    NSDecimalNumber *imageRequestsNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataKeyImageRequests] decimalValue]];
     NSString *imageRequestsValue = [imageRequestsNumber stringValue];
     BOOL atLeastOneImageRequestHasBeenMade = [imageRequestsNumber compare:[NSDecimalNumber zero]] == NSOrderedDescending;
 
-    NSDecimalNumber *imageResponsesNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataImageResponses] decimalValue]];
+    NSDecimalNumber *imageResponsesNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataKeyImageResponses] decimalValue]];
     NSString *imageResponsesValue = [imageResponsesNumber stringValue];
 
-    NSDecimalNumber *imageBytesReceivedNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataImageBytesReceived] decimalValue]];
+    NSDecimalNumber *imageBytesReceivedNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataKeyImageBytesReceived] decimalValue]];
     NSString *imageBytesReceivedValue = [imageBytesReceivedNumber stringValue];
 
 
-    NSString *imageRequestsKey = @"Requests:";
-    NSString *imageResponsesKey = @"Responses:";
-    NSString *imageBytesReceivedKey = @"Data received (bytes):";
+    NSString *imageRequestsKey = self.dataKeysMapping[AFNetworkingMeterDataKeyImageRequests];
+    NSString *imageResponsesKey = self.dataKeysMapping[AFNetworkingMeterDataKeyImageResponses];
+    NSString *imageBytesReceivedKey = self.dataKeysMapping[AFNetworkingMeterDataKeyImageBytesReceived];
 
 
     imageRequestsString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
@@ -154,19 +157,19 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
 
 #pragma mark Server errors
 
-    NSDecimalNumber *totalServerErrorsNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataTotalServerErrors] decimalValue]];
+    NSDecimalNumber *totalServerErrorsNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataKeyTotalServerErrors] decimalValue]];
     NSString *totalServerErrorsValue = [totalServerErrorsNumber stringValue];
     BOOL atLeastOneServerErrorHasOccured = [totalServerErrorsNumber compare:[NSDecimalNumber zero]] == NSOrderedDescending;
 
 
-    NSString *totalServerErrorsKey = @"Total:";
+    NSString *totalServerErrorsKey = self.dataKeysMapping[AFNetworkingMeterDataKeyTotalServerErrors];
     NSMutableString *totalServerErrorsString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
     [totalServerErrorsString replaceCharactersInRange:NSMakeRange(0, totalServerErrorsKey.length) withString:totalServerErrorsKey];
     [totalServerErrorsString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - totalServerErrorsValue.length, totalServerErrorsValue.length) withString:totalServerErrorsValue];
 
 
     if (atLeastOneServerErrorHasOccured) {
-        NSDictionary *serverErrorsValue = [data valueForKey:AFNetworkingMeterDataServerErrors];
+        NSDictionary *serverErrorsValue = [data valueForKey:AFNetworkingMeterDataKeyServerErrors];
 
         NSMutableArray *serverErrorsStringsArray = [NSMutableArray array];
 
@@ -186,19 +189,19 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
 
 #pragma mark Connection errors
 
-    NSNumber *totalConnectionErrorsNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataTotalConnectionErrors] decimalValue]];
+    NSNumber *totalConnectionErrorsNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataKeyTotalConnectionErrors] decimalValue]];
 
     NSString *totalConnectionErrorsValue = [totalConnectionErrorsNumber stringValue];
     BOOL atLeastOneConnectionErrorHasOccured = [totalConnectionErrorsNumber compare:[NSDecimalNumber zero]] == NSOrderedDescending;;
     
-    NSString *totalConnectionErrorsKey = @"Total:";
+    NSString *totalConnectionErrorsKey = self.dataKeysMapping[AFNetworkingMeterDataKeyTotalConnectionErrors];
     totalConnectionErrorsString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
     [totalConnectionErrorsString replaceCharactersInRange:NSMakeRange(0, totalConnectionErrorsKey.length) withString:totalConnectionErrorsKey];
     [totalConnectionErrorsString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - totalConnectionErrorsValue.length, totalConnectionErrorsValue.length) withString:totalConnectionErrorsValue];
 
 
     if (atLeastOneConnectionErrorHasOccured) {
-        NSDictionary *connectionErrorsValue = [data valueForKey:AFNetworkingMeterDataConnectionErrors];
+        NSDictionary *connectionErrorsValue = [data valueForKey:AFNetworkingMeterDataKeyConnectionErrors];
 
         NSMutableArray *connectionErrorsStringsArray = [NSMutableArray array];
 
@@ -223,6 +226,7 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
     NSString *headerTop = NSStringFromCharacterAndLength(@"=", REPORT_WIDTH);
     NSString *headerTitle = @"   AFNetworkingMeter  -  formatted report   ";
     NSString *headerBottom = NSStringFromCharacterAndLength(@"-", REPORT_WIDTH);
+    
     NSString *headerString = [@[headerTop, headerTitle, headerBottom] componentsJoinedByString:@"\n"];
 
     [formattedDataComponents addObject:@"\n\n"];
@@ -300,6 +304,31 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
     [formattedDataComponents addObject:@"\n\n"];
 
     return [formattedDataComponents componentsJoinedByString:@""];
+}
+
+- (NSDictionary *)dataKeysMapping {
+    if (_dataKeysMapping == nil) {
+        _dataKeysMapping = @{
+            AFNetworkingMeterDataKeyRequests  : @"Requests:",
+            AFNetworkingMeterDataKeyResponses : @"Responses:",
+
+            AFNetworkingMeterDataKeyBytesReceived : @"Received (bytes):",
+            AFNetworkingMeterDataKeyBytesSent :     @"Sent (bytes):",
+
+            AFNetworkingMeterDataKeyMinimalElapsedTimeForRequest : @"Min (seconds):",
+            AFNetworkingMeterDataKeyMaximalElapsedTimeForRequest : @"Max (seconds):",
+
+            AFNetworkingMeterDataKeyTotalServerErrors : @"Total:",
+
+            AFNetworkingMeterDataKeyTotalConnectionErrors : @"Total:",
+
+            AFNetworkingMeterDataKeyImageRequests      : @"Requests:",
+            AFNetworkingMeterDataKeyImageResponses     : @"Responses:",
+            AFNetworkingMeterDataKeyImageBytesReceived : @"Data received (bytes):"
+        };
+    }
+
+    return _dataKeysMapping;
 }
 
 @end

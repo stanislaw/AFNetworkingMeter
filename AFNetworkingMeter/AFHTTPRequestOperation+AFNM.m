@@ -6,12 +6,12 @@
 //  Copyright (c) 2013 Stanislaw Pankevich. All rights reserved.
 //
 
-#import "AFHTTPRequestOperation+StartDate.h"
+#import "AFHTTPRequestOperation+AFNM.h"
 #import <objc/runtime.h>
 
 void * AFNMHTTPRequestOperationStartDate = &AFNMHTTPRequestOperationStartDate;
 
-@implementation AFHTTPRequestOperation (StartDate)
+@implementation AFHTTPRequestOperation (AFNM)
 
 - (NSDate *)AFNMStartDate {
     return objc_getAssociatedObject(self, AFNMHTTPRequestOperationStartDate);

@@ -9,7 +9,7 @@
 #import "AFNetworkingMeterData.h"
 #import "AFNetworkingMeterConstants.h"
 
-#import "AFHTTPRequestOperation+StartDate.h"
+#import "AFHTTPRequestOperation+AFNM.h"
 
 @interface AFNetworkingMeterData () {
     NSMutableDictionary * _data;
@@ -33,49 +33,49 @@
 #pragma mark AFHTTPRequestOperation
 
 - (void)collectRequestDataFromAFHTTPRequestOperation:(AFHTTPRequestOperation *)operation {
-    [self addNumberValue:@(1) forKey:AFNetworkingMeterDataRequests];
+    [self addNumberValue:@(1) forKey:AFNetworkingMeterDataKeyRequests];
 
     NSDictionary *HTTPHeaders;
     if ((HTTPHeaders = operation.request.allHTTPHeaderFields)) {
         NSData *HTTPHeadersData = [NSPropertyListSerialization dataFromPropertyList:HTTPHeaders
                                                           format:NSPropertyListBinaryFormat_v1_0 errorDescription:NULL];
 
-        [self addNumberValue:@(HTTPHeadersData.length) forKey:AFNetworkingMeterDataHeaderBytesSent];
+        [self addNumberValue:@(HTTPHeadersData.length) forKey:AFNetworkingMeterDataKeyHeaderBytesSent];
     }
 
     NSData *HTTPBody;
     if ((HTTPBody = [operation.request HTTPBody])) {
-        [self addNumberValue:@(HTTPBody.length) forKey:AFNetworkingMeterDataBodyBytesSent];
+        [self addNumberValue:@(HTTPBody.length) forKey:AFNetworkingMeterDataKeyBodyBytesSent];
     }
 }
 
 - (void)collectResponseDataFromAFHTTPRequestOperation:(AFHTTPRequestOperation *)operation {
-    [self addNumberValue:@(1) forKey:AFNetworkingMeterDataResponses];
+    [self addNumberValue:@(1) forKey:AFNetworkingMeterDataKeyResponses];
 
     NSTimeInterval elapsedTime = [[NSDate date] timeIntervalSinceDate:[operation AFNMStartDate]];
     
-    [self setMinimalNumberValue:@(elapsedTime) forKey:AFNetworkingMeterDataMinimalElapsedTimeForRequest];
-    [self setMaximalNumberValue:@(elapsedTime) forKey:AFNetworkingMeterDataMaximalElapsedTimeForRequest];
+    [self setMinimalNumberValue:@(elapsedTime) forKey:AFNetworkingMeterDataKeyMinimalElapsedTimeForRequest];
+    [self setMaximalNumberValue:@(elapsedTime) forKey:AFNetworkingMeterDataKeyMaximalElapsedTimeForRequest];
 
     if (operation.error) {
         NSError *error = operation.error;
         if ([error.domain isEqualToString:AFNetworkingErrorDomain]) {            
-            [self addNumberValue:@(1) forKey:AFNetworkingMeterDataTotalServerErrors];
+            [self addNumberValue:@(1) forKey:AFNetworkingMeterDataKeyTotalServerErrors];
 
             NSString *statusCode = [NSString stringWithFormat:@"%@", @(operation.response.statusCode)];
 
-            NSString *reasonPhrase = RFC2616_HTTPStatusCodesAndReasonPhrases()[@(operation.response.statusCode)];
+            NSString *reasonPhrase = AFNM_RFC2616_HTTPStatusCodesAndReasonPhrases()[@(operation.response.statusCode)];
             if (reasonPhrase) statusCode = [statusCode stringByAppendingFormat:@" %@", reasonPhrase];
 
-            [self incrementValueOfDictionaryKey:statusCode forKey:AFNetworkingMeterDataServerErrors];
+            [self incrementValueOfDictionaryKey:statusCode forKey:AFNetworkingMeterDataKeyServerErrors];
             
         } else if ([error.domain isEqualToString:NSURLErrorDomain]) {
-            [self addNumberValue:@(1) forKey:AFNetworkingMeterDataTotalConnectionErrors];
+            [self addNumberValue:@(1) forKey:AFNetworkingMeterDataKeyTotalConnectionErrors];
 
-            NSString *errorCode = NSStringFromNSURLError(error);
+            NSString *errorCode = AFNM_NSStringFromNSURLError(error);
             if (errorCode == nil) errorCode = @"Unknown NSURLError";
 
-            [self incrementValueOfDictionaryKey:errorCode forKey:AFNetworkingMeterDataConnectionErrors];
+            [self incrementValueOfDictionaryKey:errorCode forKey:AFNetworkingMeterDataKeyConnectionErrors];
 
             return;
         }
@@ -87,23 +87,23 @@
         NSData *HTTPHeadersData = [NSPropertyListSerialization dataFromPropertyList:HTTPHeaders
                                                                              format:NSPropertyListBinaryFormat_v1_0 errorDescription:NULL];
 
-        [self addNumberValue:@(HTTPHeadersData.length) forKey:AFNetworkingMeterDataHeaderBytesReceived];
+        [self addNumberValue:@(HTTPHeadersData.length) forKey:AFNetworkingMeterDataKeyHeaderBytesReceived];
     }
 
-    [self addNumberValue:@(operation.responseData.length) forKey:AFNetworkingMeterDataBodyBytesReceived];
+    [self addNumberValue:@(operation.responseData.length) forKey:AFNetworkingMeterDataKeyBodyBytesReceived];
 }
 
 #pragma mark
 #pragma mark AFImageRequestOperation
 
 - (void)collectRequestDataFromAFImageRequestOperation:(AFImageRequestOperation *)operation {
-    [self addNumberValue:@(1) forKey:AFNetworkingMeterDataImageRequests];
+    [self addNumberValue:@(1) forKey:AFNetworkingMeterDataKeyImageRequests];
 }
 
 - (void)collectResponseDataFromAFImageRequestOperation:(AFImageRequestOperation *)operation {
-    [self addNumberValue:@(1) forKey:AFNetworkingMeterDataImageResponses];
+    [self addNumberValue:@(1) forKey:AFNetworkingMeterDataKeyImageResponses];
 
-    [self addNumberValue:@(operation.responseData.length) forKey:AFNetworkingMeterDataImageBytesReceived];
+    [self addNumberValue:@(operation.responseData.length) forKey:AFNetworkingMeterDataKeyImageBytesReceived];
 }
 
 #pragma mark
