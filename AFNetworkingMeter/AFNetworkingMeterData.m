@@ -72,7 +72,7 @@
         } else if ([error.domain isEqualToString:NSURLErrorDomain]) {
             [self addNumberValue:@(1) forKey:AFNetworkingMeterDataTotalConnectionErrors];
 
-            NSString *errorCode = NSURLErrorCodes()[@(error.code)];
+            NSString *errorCode = NSStringFromNSURLError(error);
             if (errorCode == nil) errorCode = @"Unknown NSURLError";
 
             [self incrementValueOfDictionaryKey:errorCode forKey:AFNetworkingMeterDataConnectionErrors];

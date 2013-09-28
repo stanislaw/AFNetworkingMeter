@@ -108,39 +108,48 @@ static NSDictionary * RFC2616_HTTPStatusCodesAndReasonPhrases() {
 #pragma mark
 #pragma mark NSURLError humanized codes
 
-static inline NSDictionary * NSURLErrorCodes() {
-    static NSDictionary *NSURLErrorCodes;
+#define NSStringFromMethodForEnumType(_name, _type, _components...) static inline NSString *NSStringFrom##_name(_type value) {    \
+    NSArray *componentsStrings = [@(#_components) componentsSeparatedByString:@", "];    \
+    \
+    int N = (sizeof((_type[]){0, ##_components})/sizeof(_type) - 1);    \
+    _type componentsCArray[] = { _components };    \
+    \
+    for (int i = 0; i < N; i++) {    \
+        if (componentsCArray[i] == value) return [componentsStrings objectAtIndex:i];    \
+    }    \
+    \
+    return nil;    \
+}
 
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSURLErrorCodes = @{
-            @(NSURLErrorCancelled)                     : @"NSURLErrorCancelled",
-            @(NSURLErrorBadURL)                        : @"NSURLErrorBadURL",
-            @(NSURLErrorTimedOut)                      : @"NSURLErrorTimedOut",
-            @(NSURLErrorUnsupportedURL)                : @"NSURLErrorUnsupportedURL",
-            @(NSURLErrorCannotFindHost)                : @"NSURLErrorCannotFindHost",
-            @(NSURLErrorCannotConnectToHost)           : @"NSURLErrorCannotConnectToHost",
-            @(NSURLErrorNetworkConnectionLost)         : @"NSURLErrorNetworkConnectionLost",
-            @(NSURLErrorDNSLookupFailed)               : @"NSURLErrorDNSLookupFailed",
-            @(NSURLErrorHTTPTooManyRedirects)          : @"NSURLErrorHTTPTooManyRedirects",
-            @(NSURLErrorResourceUnavailable)           : @"NSURLErrorResourceUnavailable",
-            @(NSURLErrorNotConnectedToInternet)        : @"NSURLErrorNotConnectedToInternet",
-            @(NSURLErrorRedirectToNonExistentLocation) : @"NSURLErrorRedirectToNonExistentLocation",
-            @(NSURLErrorBadServerResponse)             : @"NSURLErrorBadServerResponse",
-            @(NSURLErrorUserCancelledAuthentication)   : @"NSURLErrorUserCancelledAuthentication",
-            @(NSURLErrorUserAuthenticationRequired)    : @"NSURLErrorUserAuthenticationRequired",
-            @(NSURLErrorZeroByteResource)              : @"NSURLErrorZeroByteResource",
-            @(NSURLErrorCannotDecodeRawData)           : @"NSURLErrorCannotDecodeRawData",
-            @(NSURLErrorCannotDecodeContentData)       : @"NSURLErrorCannotDecodeContentData",
-            @(NSURLErrorCannotParseResponse)           : @"NSURLErrorCannotParseResponse",
-            @(NSURLErrorFileIsDirectory)               : @"NSURLErrorFileIsDirectory",
-            @(NSURLErrorFileDoesNotExist)              : @"NSURLErrorFileDoesNotExist",
-            @(NSURLErrorNoPermissionsToReadFile)       : @"NSURLErrorNoPermissionsToReadFile",
-            @(NSURLErrorDataLengthExceedsMaximum)      : @"NSURLErrorDataLengthExceedsMaximum",
-        };
-    });
+NSStringFromMethodForEnumType(NSURLErrorCode,
+                              NSInteger,
 
-    return NSURLErrorCodes;
+                              NSURLErrorCancelled,
+                              NSURLErrorBadURL,
+                              NSURLErrorTimedOut,
+                              NSURLErrorUnsupportedURL,
+                              NSURLErrorCannotFindHost,
+                              NSURLErrorCannotConnectToHost,
+                              NSURLErrorNetworkConnectionLost,
+                              NSURLErrorDNSLookupFailed,
+                              NSURLErrorHTTPTooManyRedirects,
+                              NSURLErrorResourceUnavailable,
+                              NSURLErrorNotConnectedToInternet,
+                              NSURLErrorRedirectToNonExistentLocation,
+                              NSURLErrorBadServerResponse,
+                              NSURLErrorUserCancelledAuthentication,
+                              NSURLErrorUserAuthenticationRequired,
+                              NSURLErrorZeroByteResource,
+                              NSURLErrorCannotDecodeRawData,
+                              NSURLErrorCannotDecodeContentData,
+                              NSURLErrorCannotParseResponse,
+                              NSURLErrorFileIsDirectory,
+                              NSURLErrorFileDoesNotExist,
+                              NSURLErrorNoPermissionsToReadFile,
+                              NSURLErrorDataLengthExceedsMaximum);
+
+static inline NSString * NSStringFromNSURLError(NSError *error) {
+    return NSStringFromNSURLErrorCode(error.code);
 }
 
 #endif
