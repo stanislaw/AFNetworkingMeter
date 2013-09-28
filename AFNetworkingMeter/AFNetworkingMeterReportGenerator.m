@@ -157,10 +157,10 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
 
 #pragma mark Server errors
 
-    NSString *totalServerErrorsValue = [[data valueForKey:AFNetworkingMeterDataTotalServerErrors] stringValue];
-    BOOL atLeastOneServerErrorHasOccured = !!totalServerErrorsValue;
+    NSDecimalNumber *totalServerErrorsNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataTotalServerErrors] decimalValue]];
+    NSString *totalServerErrorsValue = [totalServerErrorsNumber stringValue];
+    BOOL atLeastOneServerErrorHasOccured = [totalServerErrorsNumber compare:[NSDecimalNumber zero]] == NSOrderedDescending;
 
-    totalServerErrorsValue = totalServerErrorsValue ?: @"0";
 
     NSString *totalServerErrorsKey = @"Total:";
     NSMutableString *totalServerErrorsString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
@@ -189,10 +189,10 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
 
 #pragma mark Connection errors
 
-    NSString *totalConnectionErrorsValue = [[data valueForKey:AFNetworkingMeterDataTotalConnectionErrors] stringValue];
-    BOOL atLeastOneConnectionErrorHasOccured = !!totalConnectionErrorsValue;
+    NSNumber *totalConnectionErrorsNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataTotalConnectionErrors] decimalValue]];
 
-    totalConnectionErrorsValue = totalConnectionErrorsValue ?: @"0";
+    NSString *totalConnectionErrorsValue = [totalConnectionErrorsNumber stringValue];
+    BOOL atLeastOneConnectionErrorHasOccured = [totalConnectionErrorsNumber compare:[NSDecimalNumber zero]] == NSOrderedDescending;;
     
     NSString *totalConnectionErrorsKey = @"Total:";
     totalConnectionErrorsString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
