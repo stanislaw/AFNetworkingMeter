@@ -2,6 +2,10 @@
 
 ![AFNetworkingMeter demonstration](https://raw.github.com/stanislaw/AFNetworkingMeter/master/AFNetworkingMeter.png)
 
+## Overview
+
+AFNetworkingMeter is a grateful child of AFHTTPRequestOperationLogger created by Mattt Thompson (@mattt) for AFNetworking library. It is not the one: there is also its closest brother and companion [AFNetworkingLogger](https://github.com/stanislaw/AFNetworkingLogger) - they share similar design and are both built for the same purpose: to make a HTTP-logging routine for a daily basis of iOS/Mac development easy and informative.
+
 Docs are coming...
 
 ## Installation

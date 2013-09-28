@@ -219,7 +219,8 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
         connectionErrorsString = [[connectionErrorsStringsArray componentsJoinedByString:@"\n"] mutableCopy];
     }
 
-#pragma mark Aggregation of the formatted report
+#pragma mark Aggregation of a formatted report
+    
     BOOL lazyReporting = [options.allKeys containsObject:AFNetworkingMeterOptionLazyReporting];
 
     NSString *headerTop = NSStringFromCharacterAndLength(@"=", REPORT_WIDTH);
