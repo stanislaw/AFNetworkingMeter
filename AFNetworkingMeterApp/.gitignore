@@ -16,4 +16,6 @@ profile
 DerivedData
 .idea/
 *.hmapods/*
+
+Podfile.lock
 Pods/
