@@ -53,9 +53,18 @@ NSLog(@"Let's see the HTTP Report: %@", HTTPReport);
 
 ...
 
+## Server errors and connection errors
+
+Clarify their meaning as soon as possible as they can interfere...
+
 ## TODO
 
 ...
+
+## Notes
+
+* Currently `AFNetworkingMeter` calculates HTTP headers size using `-[NSPropertyListSerialization dataFromPropertyList:...` (-[NSURLRequest allHTTPHeaderFields] => NSData). Let me know if there is a more precise way of doing this.
+* This line is designated for excuses about Russian/Ukrainian english that probably resulted in some misspelings exist somewhere in this README. The author will be thankful for any spelling corrections that might appear.
 
 ## Credits
 
@@ -70,4 +79,4 @@ AFNetworkingMeter is inspired by the design of another `AFNetworking` plugin [AF
 
 ## Copyright
 
-Not yet.
+Copyright (c) 2013, Stanislaw Pankevich. See LICENSE for details.
