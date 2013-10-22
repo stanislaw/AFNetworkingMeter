@@ -53,7 +53,7 @@ static NSString * const AFNetworkingMeterDataKeyImageBytesReceived = @"AFNetwork
 #pragma mark
 #pragma mark RFC 2616 HTTP status codes and reason phrases
 
-static NSDictionary * AFNM_RFC2616_HTTPStatusCodesAndReasonPhrases() {
+static inline NSDictionary * AFNM_RFC2616_HTTPStatusCodesAndReasonPhrases() {
     static NSDictionary * RFC2616_HTTPStatusCodesAndReasonPhrases;
 
     static dispatch_once_t onceToken;
