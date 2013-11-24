@@ -80,3 +80,7 @@ AFNetworkingMeter is inspired by the design of another `AFNetworking` plugin [AF
 ## Copyright
 
 Copyright (c) 2013, Stanislaw Pankevich. See LICENSE for details.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/stanislaw/afnetworkingmeter/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
