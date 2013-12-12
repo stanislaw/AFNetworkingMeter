@@ -246,15 +246,17 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
     [formattedDataComponents addObject:bytesReceivedString];
     [formattedDataComponents addObject:@"\n"];
 
-    [formattedDataComponents addObject:@"\n"];
-    [formattedDataComponents addObject:@"Elapsed time for request ..................."];
-    [formattedDataComponents addObject:@"\n\n"];
+    if (atLeastOneRequestHasBeenMade) {
+        [formattedDataComponents addObject:@"\n"];
+        [formattedDataComponents addObject:@"Elapsed time for request ..................."];
+        [formattedDataComponents addObject:@"\n\n"];
 
-    [formattedDataComponents addObject:minimalElapsedTimeString];
-    [formattedDataComponents addObject:@"\n"];
+        [formattedDataComponents addObject:minimalElapsedTimeString];
+        [formattedDataComponents addObject:@"\n"];
 
-    [formattedDataComponents addObject:maximalElapsedTimeString];
-    [formattedDataComponents addObject:@"\n"];
+        [formattedDataComponents addObject:maximalElapsedTimeString];
+        [formattedDataComponents addObject:@"\n"];
+    }
 
     if (atLeastOneImageRequestHasBeenMade || lazyReporting == NO) {
         [formattedDataComponents addObject:@"\n"];
