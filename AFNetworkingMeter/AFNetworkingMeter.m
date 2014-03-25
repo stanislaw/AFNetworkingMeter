@@ -3,7 +3,6 @@
 #import "AFNetworkingMeterConstants.h"
 
 #import <AFNetworking/AFHTTPRequestOperation.h>
-#import <AFNetworking/AFImageRequestOperation.h>
 
 #import "AFHTTPRequestOperation+AFNM.h"
 
@@ -100,11 +99,7 @@ extern void * AFNMHTTPRequestOperationStartDate;
 
     [operation setAFNMStartDate:[NSDate date]];
 
-    if ([operation isKindOfClass:[AFImageRequestOperation class]]) {
-        [self.data collectRequestDataFromAFImageRequestOperation:(AFImageRequestOperation *)operation];
-    } else {
-        [self.data collectRequestDataFromAFHTTPRequestOperation:operation];
-    }
+    [self.data collectRequestDataFromAFHTTPRequestOperation:operation];
 }
 
 - (void)HTTPOperationDidFinish:(NSNotification *)notification {
@@ -118,11 +113,7 @@ extern void * AFNMHTTPRequestOperationStartDate;
         return;
     }
 
-    if ([operation isKindOfClass:[AFImageRequestOperation class]]) {
-        [self.data collectResponseDataFromAFImageRequestOperation:(AFImageRequestOperation *)operation];
-    } else {
-        [self.data collectResponseDataFromAFHTTPRequestOperation:operation];
-    }
+    [self.data collectResponseDataFromAFHTTPRequestOperation:operation];
 }
 
 @end

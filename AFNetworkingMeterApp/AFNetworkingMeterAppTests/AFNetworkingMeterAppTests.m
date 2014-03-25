@@ -11,7 +11,6 @@
 #import "AFNetworkingMeter.h"
 
 #import <AFNetworking/AFHTTPRequestOperation.h>
-#import <AFNetworking/AFImageRequestOperation.h>
 
 SPEC_BEGIN(AFNetworkingMeterAppSpec)
 
@@ -95,6 +94,7 @@ describe(@"...", ^{
         runLoopIfNeeded();
     });
 
+    /*
     it (@"AFImageRequestOperation", ^{
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
@@ -117,6 +117,8 @@ describe(@"...", ^{
 
         runLoopIfNeeded();
     });
+     */
+
 });
 
 SPEC_END

@@ -96,6 +96,7 @@
 #pragma mark
 #pragma mark AFImageRequestOperation
 
+/*
 - (void)collectRequestDataFromAFImageRequestOperation:(AFImageRequestOperation *)operation {
     [self addNumberValue:@(1) forKey:AFNetworkingMeterDataKeyImageRequests];
 }
@@ -105,6 +106,7 @@
 
     [self addNumberValue:@(operation.responseData.length) forKey:AFNetworkingMeterDataKeyImageBytesReceived];
 }
+*/
 
 #pragma mark
 #pragma mark Private API ...
