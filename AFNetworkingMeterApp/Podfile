@@ -1,5 +1,6 @@
+platform :ios, '6.0'
+
 pod 'AFNetworking', '~> 1'
-pod 'JSONKit'
 
 target :AFNetworkingMeterAppTests do
   pod 'Kiwi'

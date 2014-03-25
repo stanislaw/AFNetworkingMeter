@@ -1,6 +1,5 @@
 #import <Kiwi/Kiwi.h>
 
-#import <JSONKit/JSONKit.h>
 #import <OHHTTPStubs.h>
 
 static inline void runLoopIfNeeded() {

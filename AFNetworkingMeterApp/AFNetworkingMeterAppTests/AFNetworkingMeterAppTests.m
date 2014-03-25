@@ -25,25 +25,27 @@ describe(@"...", ^{
     });
     
     afterEach(^{
-        [OHHTTPStubs removeAllRequestHandlers];
+        [OHHTTPStubs removeAllStubs];
     });
     
     it (@"200 OK", ^{
         NSDictionary *dictionary = @{ @"KEY": @"VALUE" };
-        
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionary options:0 error:nil];
+
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
         } withStubResponse:^OHHTTPStubsResponse*(NSURLRequest *request) {
-            return [OHHTTPStubsResponse responseWithData:[dictionary JSONData] statusCode:200 responseTime:0 headers:nil];
+            return [OHHTTPStubsResponse responseWithData:jsonData statusCode:200 headers:nil];
         }];
         
         NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"www.foo.bar"]];
-        urlRequest.HTTPBody = [dictionary JSONData];
+        urlRequest.HTTPBody = [jsonData copy];
         
         AFHTTPRequestOperation *requestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:urlRequest];
         [requestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
 
-            NSLog(@"Received data: %@", [operation.responseData objectFromJSONData]);
+            id object = [NSJSONSerialization JSONObjectWithData:operation.responseData options:0 error:nil];
+            NSLog(@"Received data: %@", object);
 
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             abort();
@@ -58,7 +60,7 @@ describe(@"...", ^{
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
         } withStubResponse:^OHHTTPStubsResponse*(NSURLRequest *request) {
-            return [OHHTTPStubsResponse responseWithData:nil statusCode:404 responseTime:0 headers:nil];
+            return [OHHTTPStubsResponse responseWithData:nil statusCode:404 headers:nil];
         }];
 
         NSURLRequest *urlRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:@"www.foo.bar"]];
@@ -97,7 +99,11 @@ describe(@"...", ^{
         [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
             return YES;
         } withStubResponse:^OHHTTPStubsResponse*(NSURLRequest *request) {
-            return [OHHTTPStubsResponse responseWithFile:@"apple.jpg" contentType:@"image/jpeg" responseTime:0];
+            NSString *imagePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"apple" ofType:@"jpg"];
+
+            assert(imagePath != nil);
+
+            return [OHHTTPStubsResponse responseWithFileAtPath:imagePath statusCode:200 headers:nil];
         }];
 
         NSURLRequest *urlRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:@"www.foo.bar/apple.jpg"]];
