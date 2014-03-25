@@ -34,9 +34,6 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
                     *responsesString,
                     *minimalElapsedTimeString,
                     *maximalElapsedTimeString,
-                    *imageRequestsString,
-                    *imageResponsesString,
-                    *imageBytesReceivedString,
                     *totalConnectionErrorsString,
                     *connectionErrorsString,
                     *serverErrorsString;
@@ -122,38 +119,6 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
         [maximalElapsedTimeString replaceCharactersInRange:NSMakeRange(0, maximalElapsedTimeKey.length) withString:maximalElapsedTimeKey];
         [maximalElapsedTimeString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - maximalElapsedTimeValue.length, maximalElapsedTimeValue.length) withString:maximalElapsedTimeValue];
     }
-
-#pragma mark Image requests
-
-    NSDecimalNumber *imageRequestsNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataKeyImageRequests] decimalValue]];
-    NSString *imageRequestsValue = [imageRequestsNumber stringValue];
-    BOOL atLeastOneImageRequestHasBeenMade = [imageRequestsNumber compare:[NSDecimalNumber zero]] == NSOrderedDescending;
-
-    NSDecimalNumber *imageResponsesNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataKeyImageResponses] decimalValue]];
-    NSString *imageResponsesValue = [imageResponsesNumber stringValue];
-
-    NSDecimalNumber *imageBytesReceivedNumber = [NSDecimalNumber decimalNumberWithDecimal:[[data valueForKey:AFNetworkingMeterDataKeyImageBytesReceived] decimalValue]];
-    NSString *imageBytesReceivedValue = [imageBytesReceivedNumber stringValue];
-
-
-    NSString *imageRequestsKey = self.dataKeysMapping[AFNetworkingMeterDataKeyImageRequests];
-    NSString *imageResponsesKey = self.dataKeysMapping[AFNetworkingMeterDataKeyImageResponses];
-    NSString *imageBytesReceivedKey = self.dataKeysMapping[AFNetworkingMeterDataKeyImageBytesReceived];
-
-
-    imageRequestsString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
-    [imageRequestsString replaceCharactersInRange:NSMakeRange(0, imageRequestsKey.length) withString:imageRequestsKey];
-    [imageRequestsString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - imageRequestsValue.length, imageRequestsValue.length) withString:imageRequestsValue];
-
-
-    imageResponsesString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
-    [imageResponsesString replaceCharactersInRange:NSMakeRange(0, imageResponsesKey.length) withString:imageResponsesKey];
-    [imageResponsesString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - imageResponsesValue.length, imageResponsesValue.length) withString:imageResponsesValue];
-
-
-    imageBytesReceivedString = [stringWithLengthEqualToReportWidthAndFilledWithSpaces mutableCopy];
-    [imageBytesReceivedString replaceCharactersInRange:NSMakeRange(0, imageBytesReceivedKey.length) withString:imageBytesReceivedKey];
-    [imageBytesReceivedString replaceCharactersInRange:NSMakeRange(REPORT_WIDTH - imageBytesReceivedValue.length, imageBytesReceivedValue.length) withString:imageBytesReceivedValue];
 
 #pragma mark Server errors
 
@@ -255,21 +220,6 @@ NSString *NSStringFromCharacterAndLength(NSString *character, NSUInteger length)
         [formattedDataComponents addObject:@"\n"];
 
         [formattedDataComponents addObject:maximalElapsedTimeString];
-        [formattedDataComponents addObject:@"\n"];
-    }
-
-    if (atLeastOneImageRequestHasBeenMade || lazyReporting == NO) {
-        [formattedDataComponents addObject:@"\n"];
-        [formattedDataComponents addObject:@"Images ....................................."];
-        [formattedDataComponents addObject:@"\n\n"];
-
-        [formattedDataComponents addObject:imageRequestsString];
-        [formattedDataComponents addObject:@"\n"];
-
-        [formattedDataComponents addObject:imageResponsesString];
-        [formattedDataComponents addObject:@"\n"];
-
-        [formattedDataComponents addObject:imageBytesReceivedString];
         [formattedDataComponents addObject:@"\n"];
     }
 

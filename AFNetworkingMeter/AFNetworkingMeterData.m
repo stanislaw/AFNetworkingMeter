@@ -94,21 +94,6 @@
 }
 
 #pragma mark
-#pragma mark AFImageRequestOperation
-
-/*
-- (void)collectRequestDataFromAFImageRequestOperation:(AFImageRequestOperation *)operation {
-    [self addNumberValue:@(1) forKey:AFNetworkingMeterDataKeyImageRequests];
-}
-
-- (void)collectResponseDataFromAFImageRequestOperation:(AFImageRequestOperation *)operation {
-    [self addNumberValue:@(1) forKey:AFNetworkingMeterDataKeyImageResponses];
-
-    [self addNumberValue:@(operation.responseData.length) forKey:AFNetworkingMeterDataKeyImageBytesReceived];
-}
-*/
-
-#pragma mark
 #pragma mark Private API ...
 
 - (void)addNumberValue:(NSNumber *)numberValue forKey:(NSString *)key {

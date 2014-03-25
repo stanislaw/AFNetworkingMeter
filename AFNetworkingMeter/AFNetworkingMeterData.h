@@ -15,9 +15,4 @@
 - (void)collectRequestDataFromAFHTTPRequestOperation:(AFHTTPRequestOperation *)operation;
 - (void)collectResponseDataFromAFHTTPRequestOperation:(AFHTTPRequestOperation *)operation;
 
-/*
-- (void)collectRequestDataFromAFImageRequestOperation:(AFImageRequestOperation *)operation;
-- (void)collectResponseDataFromAFImageRequestOperation:(AFImageRequestOperation *)operation;
- */
-
 @end

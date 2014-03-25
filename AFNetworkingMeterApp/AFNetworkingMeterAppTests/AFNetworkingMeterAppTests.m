@@ -67,6 +67,7 @@ describe(@"...", ^{
 
         [requestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            abort();
         }];
 
         [requestOperation start];
