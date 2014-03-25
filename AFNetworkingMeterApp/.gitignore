@@ -20,3 +20,4 @@ DerivedData
 *.hmapods/*
 Podfile.lock
 Pods/
+Build/
